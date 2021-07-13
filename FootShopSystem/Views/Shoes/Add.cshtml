@@ -1,0 +1,69 @@
+﻿@model AddShoeFormModel
+
+@{
+    ViewData["Title"] = "Add Car";
+}
+<form method="post">
+    <h2 class="heading-margin text-center">Add Shoe</h2>
+    <div class="form-group">
+        <label asp-for="Brand">Brand</label>
+        <input asp-for="Brand" class="form-control" placeholder="Nike,Addidas,Puma, etc....">
+        <span asp-validation-for="Brand" class="small text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Model">Model</label>
+        <input asp-for="Model" class="form-control" placeholder="AirMax,Ultraboost,Rs-X, etc....">
+        <span asp-validation-for="Model" class="small text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Price">Price</label>
+        <input asp-for="Price" class="form-control" placeholder="200,300...">
+        <span asp-validation-for="Price" class="small text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ImageUrl">ImageUrl</label>
+        <input asp-for="ImageUrl" class="form-control" placeholder="https/www.example.com">
+        <span asp-validation-for="ImageUrl" class="small text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description">Example textarea</label>
+        <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+        <span asp-validation-for="Description" class="small text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CategoryId"></label>
+        <select asp-for="CategoryId" class="form-control">
+            @foreach (var category in Model.Categories)
+            {
+                <option value="@category.Id">@category.Name</option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ShoeColorsId"></label>
+        <select asp-for="ShoeColorsId" class="form-control">
+            @foreach (var color in Model.Colors)
+            {
+                <option value="@color.Id">@color.Name</option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="SizeId"></label>
+        <select asp-for="SizeId" class="form-control">
+            @foreach (var size in Model.Sizes)
+            {
+                <option value="@size.Id">@size.SizeValue</option>
+            }
+        </select>
+    </div>
+    <input class="btn btn-primary" type="submit" value="Save" />
+
+</form>
