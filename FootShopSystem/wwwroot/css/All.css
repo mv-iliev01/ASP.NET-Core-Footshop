@@ -1,0 +1,90 @@
+body {
+    font-family: 'open sans,Helvetica,Arial,sans-serif';
+}
+
+.Container {
+    margin: 20px;
+    float: left;
+    width: 20%;
+}
+
+.vertical-div {
+    width: 200px;
+    padding: 20px;
+    margin: 10px;
+    height: 100%;
+    background: #f3f3f3;
+    margin-left: 0;
+}
+
+.filtersContainer {
+    width: 200px;
+    padding: 20px;
+    height: 100%;
+    border: 1px solid #dbd6d6;
+    padding-top: 0;
+}
+
+a {
+    display: block;
+    cursor: pointer;
+    margin: 10px;
+}
+
+.checkbox {
+    width: 20px;
+    height: 20px;
+    padding: 5px;
+    padding-left: 0;
+    padding-bottom: 0;
+}
+
+.AllShoes {
+    float: right;
+    width: 75%;
+    margin-top: 5%;
+}
+
+.item {
+    float: left;
+    width: 220px;
+    height: 425px;
+    margin: 20px;
+    object-fit: cover;
+}
+
+.picture {
+    border: 0;
+    width: 100%;
+    height: 60%;
+    top: 0;
+    left: 0;
+    border: 1px solid rgb(77, 76, 76);
+}
+
+.text {
+    float: left;
+    width: 100%;
+}
+
+.textBrand {
+    float: left;
+    padding: 10px;
+    padding-top: 0;
+    padding-left: 0;
+    width: 100%;
+    color: gray;
+}
+
+.textPrice {
+    float: left;
+    padding: 10px;
+    padding-top: 0;
+    padding-left: 0;
+    width: 100%;
+    font-weight: bold;
+}
+
+.detailsBtn{
+    width:90%;
+}

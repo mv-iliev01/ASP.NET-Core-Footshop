@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/css/createAndDetails.css" />
+    <title>Details</title>
+</head>
+<body>
+    <div class="center">
+        <div class="leftDiv">
+            <img src="@Model.ImageUrl" class="ShoePicture">
+        </div>
+
+        <div class="leftDiv">
+            <span class="nameFormated">Обувки @Model.Brand @Model.Model</span>
+            <br>
+            <div>
+                <p class="pUpper">@Model.Price</p>
+                <p>Спестяваш 30%</p>
+            </div>
+            <hr>
+            <br>
+            <div class="panel-body">
+                <div class="shoeColor">
+                    <p class="bold">Избери Цвят: </p>
+                    <img src="@Model.ImageUrl" class="shoeColorPicture">
+                </div>
+                <div class="chooseSize">
+                    <p class="bold">Избери Размер: </p>
+                    <ul>
+                        <div class="sizeContainer">
+                            <button class="sizeButton">41</button>
+                            <label>(10 in stock)</label>
+                        </div>
+                        <div class="sizeContainer">
+                            <button class="sizeButton">42</button>
+                            <label>(10 in stock)</label>
+                        </div>
+                        <div class="sizeContainer">
+                            <button class="sizeButton">43</button>
+                            <label>(10 in stock)</label>
+                        </div>
+                        <div class="sizeContainer">
+                            <button class="sizeButton">44</button>
+                            <label>(10 in stock)</label>
+                        </div>
+                        <div class="sizeContainer">
+                            <button class="sizeButton">45</button>
+                            <label>(10 in stock)</label>
+                        </div>
+                    </ul>
+                </div>
+                <br>
+                <div class="quantityAndBuy">
+                    <label class="bold">Количество: </label>
+                    <br>
+                    <button class="quantityBtn">m</button>
+                    <input class="inputText" placeholder="1">
+                    <button class="quantityBtn">p</button>
+                    <button class="addToCartBtn">Добави в количката</button>
+                </div>
+                <br>
+                <div>
+                    <button class="favoritesBtn"><img height="20px" width="20px" src="/images/hearth.png">Add to favorites</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="productInfo">
+        <h2 style="text-align:center;"> Product Information</h2>
+        <hr>
+        <div class="productCotainer">
+           @Model.Description
+        </div>
+    </div>
+</body>
+</html>

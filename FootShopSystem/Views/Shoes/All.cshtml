@@ -1,5 +1,77 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/All.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="main">
+        <div class="Container">
+            <h3>Categories</h3>
+            <div class="vertical-div">
+                <a> Winter boots (49)</a>
+                <hr>
+                <a> Trainers (29)</a>
+                <hr>
+                <a> Sandals (15)</a>
+                <hr>
+                <a> Casual shoes (97)</a>
+            </div>
+            <h3>Filters</h3>
+            <div class="filtersContainer">
+                <h3>Brand</h3>
+                <div>
+                    <a><img class="checkbox" src="/img/checkbox.png"> ADIDAS (82)</a>
+                </div>
+                <div>
+                    <a><img class="checkbox" src="/img/checkbox.png"> Nike (82)</a>
+                </div>
+                <div>
+                    <a><img class="checkbox" src="/img/checkbox.png"> PUMA (82)</a>
+                </div>
+                <div>
+                    <a><img class="checkbox" src="/img/checkbox.png"> UNDER ARMOR (82)</a>
+                </div>
+            </div>
+            <div class="filtersContainer">
+                <h3>Price</h3>
+                <div>
+                    <a><img class="checkbox" src="/img/checkbox.png"> To 70 BGN</a>
+                </div>
+                <div>
+                    <a><img class="checkbox" src="/img/checkbox.png"> 70 - 120 BGN)</a>
+                </div>
+                <div>
+                    <a><img class="checkbox" src="/img/checkbox.png"> 120 - 170 BGN</a>
+                </div>
+                <div>
+                    <a><img class="checkbox" src="/img/checkbox.png"> 170 - 270 BGN</a>
+                </div>
+                <div>
+                    <a><img class="checkbox" src="/img/checkbox.png"> Above 270 BGN</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="AllShoes">
+
+            @foreach (var shoe in Model)
+            {
+                <div class="item">
+                    <img src="@shoe.ImageUrl" class="picture" asp-append-version="true">
+                    <label class="text">@shoe.Brand</label>
+                    <label class="text">@shoe.Model</label>
+                    <label class="textPrice">@shoe.Price BGN</label>
+                    <a href="/Shoes/Details?ShoeId=@shoe.Id" class="btn btn-info detailsBtn">Details</a>
+                </div>
+            }
+            
+        </div>
+    </div>
+
+</body>
+</html>

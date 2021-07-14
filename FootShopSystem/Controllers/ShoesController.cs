@@ -57,8 +57,8 @@
                 ImageUrl = shoe.ImageUrl,
                 Description = shoe.Description,
                 CategoryId = shoe.CategoryId,
-                ColorId=shoe.ShoeColorsId,
-                SizeId=shoe.SizeId
+                ColorId = shoe.ShoeColorsId,
+                SizeId = shoe.SizeId
             };
 
             this.data.Shoes.Add(shoeData);
@@ -66,6 +66,46 @@
             this.data.SaveChanges();
 
             return RedirectToAction("Index", "Home");
+        }
+
+        public IActionResult All()
+        {
+            var shoesQuery = this.data
+                .Shoes.AsQueryable();
+
+            var shoes = shoesQuery
+                .OrderByDescending(s => s.Size.SizeValue)
+                .Select(s => new ListingShoeViewModel
+                {
+                    Id = s.Id,
+                    Brand = s.Brand,
+                    Model = s.Model,
+                    Price = s.Price,
+                    ImageUrl = s.ImageUrl
+                })
+                .ToList();
+
+            return View(shoes);
+        }
+
+        public IActionResult Details(int shoeId)
+        {
+            var details = this.data
+                .Shoes
+                .Where(s => s.Id == shoeId)
+                .Select(s => new ShoeDetailsListingView
+                {
+                    Id = s.Id,
+                    Price=s.Price,
+                    Brand = s.Brand,
+                    Model = s.Model,
+                    ImageUrl = s.ImageUrl,
+                    Description=s.Description,
+                    Sizes = null
+                })
+                .FirstOrDefault();
+
+            return View(details);
         }
 
         private IEnumerable<ShoeCategoryViewModel> GetShoeCategories()

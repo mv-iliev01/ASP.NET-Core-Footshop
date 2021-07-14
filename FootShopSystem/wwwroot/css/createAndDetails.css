@@ -1,0 +1,122 @@
+.div-form{
+    display: block;
+    width: 150px;
+    padding-right: 20px;
+    
+}
+.center {
+    margin: auto;
+    border: 3px solid #73AD21;
+    height: 800px;
+    
+}
+.productInfo{
+    margin:auto;
+    height:auto;
+    border: 3px solid blue;
+}
+.leftDiv {
+    width: 48%; 
+    float: left;
+    height: 100%;
+    padding-left: 10px;
+    
+}
+.nameFormated{
+    font: size 1.5rem;
+    line-height: 1.33em;
+    font-weight: bold;
+    font-family: fira sans,Helvetica,Arial,sans-serif;
+}
+.pUpper{
+    margin-top: 10px;
+}
+p{
+    margin: 0;
+}
+ul {
+    list-style-type: none;
+}   
+.ShoePicture{
+    display: block;
+    border: 3px solid red;
+    padding:20px;
+    margin: auto;
+    width:80%;
+    height:400px;
+}
+.panel-body{
+background: #f3f3f3;
+padding:30px;
+}
+.shoeColor{
+    width:100%;
+    height:100px;
+}
+.shoeColor img{
+    width: 50px;
+    height: 55px;
+    border: 3px solid black;
+}
+.shoeColor img:hover{
+    border: 4px solid black;
+    cursor: pointer;
+}
+.bold{
+font-weight: bold;
+ padding-bottom: 5px;
+}
+.sizeButton{
+    padding: .4375rem 1rem;
+    background: white;
+    border: 1px solid #d9d9d9;
+    cursor: pointer;
+}
+ul button{
+    margin: 3px;
+}
+.quantityBtn{
+    height:20px;
+    text-align: center;
+    margin:20px;
+}
+.inputText{
+    text-align: center;
+}
+.addToCartBtn{
+    text-align: center;
+    background: red;
+    color: white;
+    width:100%;
+    height:45px;
+    border:none;
+    padding: .6875rem 1rem;
+    font-weight: 700;
+    float:right;
+}
+.sizeContainer{
+    width:150px;
+}
+.favoritesBtn{
+    border: none;
+    background: none;
+    text-align: center;
+    cursor: pointer;
+    padding: 4px;
+}
+.favoritesBtn :hover{
+    border: 3px solid black;
+}
+.productCotainer{
+    background: #f3f3f3;
+    padding:20px;
+    height:auto;
+}
+.description{
+    width:90%;
+    height:auto;
+    margin:0;
+}
+
+
+
