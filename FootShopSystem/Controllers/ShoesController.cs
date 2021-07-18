@@ -68,12 +68,27 @@
             return RedirectToAction("Index", "Home");
         }
 
-        public IActionResult All()
+        public IActionResult All([FromQuery] AllShoesQueryModel query)
         {
             var shoesQuery = this.data
                 .Shoes.AsQueryable();
 
+            if (!string.IsNullOrWhiteSpace(query.Brand))
+            {
+                shoesQuery = shoesQuery.Where(s => s.Brand == query.Brand);
+            }
+
+            if (!string.IsNullOrWhiteSpace(query.SearchTerm))
+            {
+                shoesQuery = shoesQuery.Where(s =>
+                  (s.Brand + " " + s.Model).ToLower().Contains(query.SearchTerm.ToLower()));
+            };
+
+            var shoeCount = this.data.Shoes.Count();
+
             var shoes = shoesQuery
+                .Skip((query.CurrentPage - 1) * AllShoesQueryModel.ShoesPerPage)
+                .Take(AllShoesQueryModel.ShoesPerPage)
                 .OrderByDescending(s => s.Size.SizeValue)
                 .Select(s => new ListingShoeViewModel
                 {
@@ -85,7 +100,18 @@
                 })
                 .ToList();
 
-            return View(shoes);
+            var brands = this.data
+                .Shoes
+                .Select(s => s.Brand)
+                .Distinct()
+                .OrderBy(br => br)
+                .ToList();
+
+            query.ShoeCount = shoeCount;
+            query.Brands = brands;
+            query.Shoes = shoes;
+
+            return View(query);
         }
 
         public IActionResult Details(int shoeId)
@@ -96,11 +122,11 @@
                 .Select(s => new ShoeDetailsListingView
                 {
                     Id = s.Id,
-                    Price=s.Price,
+                    Price = s.Price,
                     Brand = s.Brand,
                     Model = s.Model,
                     ImageUrl = s.ImageUrl,
-                    Description=s.Description,
+                    Description = s.Description,
                     Sizes = null
                 })
                 .FirstOrDefault();
