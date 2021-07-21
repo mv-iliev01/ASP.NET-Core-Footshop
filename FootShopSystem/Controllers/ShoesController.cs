@@ -3,6 +3,7 @@
     using FootShopSystem.Data;
     using FootShopSystem.Data.Models;
     using FootShopSystem.Models.Shoes;
+    using FootShopSystem.Models.Shoes.ViewModels;
     using Microsoft.AspNetCore.Mvc;
     using System.Collections.Generic;
     using System.Linq;
@@ -116,6 +117,33 @@
 
         public IActionResult Details(int shoeId)
         {
+            var shoeModel = this.data
+                .Shoes
+                .Where(s => s.Id == shoeId)
+                .Select(s => s.Model)
+                .FirstOrDefault();
+
+            var colors = this.data
+                .Shoes
+                .Where(s => s.Model == shoeModel)
+                .Select(s => new ShoeColorViewModel
+                {
+                    Id = s.Id,
+                    Name = s.Color.Name,
+                    ShoeColorImg=s.ImageUrl
+                })
+                .ToList();
+
+            var sizes = this.data
+            .Shoes
+            .Where(s => s.Model == shoeModel)
+            .Select(s => new ShoeSizeViewModel
+            {
+                Id = s.Id,
+                SizeValue = s.Size.SizeValue
+            })
+            .ToList();
+
             var details = this.data
                 .Shoes
                 .Where(s => s.Id == shoeId)
@@ -127,7 +155,8 @@
                     Model = s.Model,
                     ImageUrl = s.ImageUrl,
                     Description = s.Description,
-                    Sizes = null
+                    Sizes = sizes,
+                    Colors = colors
                 })
                 .FirstOrDefault();
 

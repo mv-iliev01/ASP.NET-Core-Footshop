@@ -17,5 +17,9 @@
         public int SizeId { get; init; }
         public IEnumerable<ShoeSizeViewModel> Sizes { get; set; }
 
+        [DisplayName("Color")]
+        public int ColorId { get; init; }
+        public IEnumerable<ShoeColorViewModel> Colors { get; set; }
+
     }
 }

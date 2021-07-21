@@ -25,31 +25,21 @@
             <div class="panel-body">
                 <div class="shoeColor">
                     <p class="bold">Избери Цвят: </p>
-                    <img src="@Model.ImageUrl" class="shoeColorPicture">
+                    @foreach (var shoe in Model.Colors)
+                    {
+                        <img src="@shoe.ShoeColorImg">
+                    }
                 </div>
                 <div class="chooseSize">
                     <p class="bold">Избери Размер: </p>
                     <ul>
-                        <div class="sizeContainer">
-                            <button class="sizeButton">41</button>
-                            <label>(10 in stock)</label>
-                        </div>
-                        <div class="sizeContainer">
-                            <button class="sizeButton">42</button>
-                            <label>(10 in stock)</label>
-                        </div>
-                        <div class="sizeContainer">
-                            <button class="sizeButton">43</button>
-                            <label>(10 in stock)</label>
-                        </div>
-                        <div class="sizeContainer">
-                            <button class="sizeButton">44</button>
-                            <label>(10 in stock)</label>
-                        </div>
-                        <div class="sizeContainer">
-                            <button class="sizeButton">45</button>
-                            <label>(10 in stock)</label>
-                        </div>
+                        @foreach (var size in Model.Sizes)
+                        {
+                            <div class="sizeContainer">
+                                <button class="sizeButton">@size.SizeValue</button>
+                                <label>(10 in stock)</label>
+                            </div>
+                        }
                     </ul>
                 </div>
                 <br>
@@ -72,7 +62,7 @@
         <h2 style="text-align:center;"> Product Information</h2>
         <hr>
         <div class="productCotainer">
-           @Model.Description
+            @Model.Description
         </div>
     </div>
 </body>
