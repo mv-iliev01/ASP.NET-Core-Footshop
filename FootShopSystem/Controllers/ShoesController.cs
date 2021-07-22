@@ -3,7 +3,7 @@
     using FootShopSystem.Data;
     using FootShopSystem.Data.Models;
     using FootShopSystem.Models.Shoes;
-    using FootShopSystem.Models.Shoes.ViewModels;
+    using FootShopSystem.Services.Shoes;
     using Microsoft.AspNetCore.Mvc;
     using System.Collections.Generic;
     using System.Linq;
@@ -11,9 +11,13 @@
     public class ShoesController : Controller
     {
         private readonly FootshopDbContext data;
+        private readonly IShoeService shoes;
 
-        public ShoesController(FootshopDbContext data)
-            => this.data = data;
+        public ShoesController(FootshopDbContext data, IShoeService shoes)
+        {
+            this.data = data;
+            this.shoes = shoes;
+        }
 
         public IActionResult Add() => View(new AddShoeFormModel
         {
@@ -38,7 +42,7 @@
 
             if (!this.data.Sizes.Any(s => s.Id == shoe.SizeId))
             {
-                this.ModelState.AddModelError(nameof(shoe.SizeId), "Category does not exist!");
+                this.ModelState.AddModelError(nameof(shoe.SizeId), "Size does not exist!");
             }
 
             if (!ModelState.IsValid)
@@ -71,46 +75,17 @@
 
         public IActionResult All([FromQuery] AllShoesQueryModel query)
         {
-            var shoesQuery = this.data
-                .Shoes.AsQueryable();
+            var queryResult = this.shoes.All(
+               query.Brand,
+               query.SearchTerm,
+               query.CurrentPage,
+               AllShoesQueryModel.ShoesPerPage);
 
-            if (!string.IsNullOrWhiteSpace(query.Brand))
-            {
-                shoesQuery = shoesQuery.Where(s => s.Brand == query.Brand);
-            }
+            var brands = this.shoes.AllShoeBrands();
 
-            if (!string.IsNullOrWhiteSpace(query.SearchTerm))
-            {
-                shoesQuery = shoesQuery.Where(s =>
-                  (s.Brand + " " + s.Model).ToLower().Contains(query.SearchTerm.ToLower()));
-            };
-
-            var shoeCount = this.data.Shoes.Count();
-
-            var shoes = shoesQuery
-                .Skip((query.CurrentPage - 1) * AllShoesQueryModel.ShoesPerPage)
-                .Take(AllShoesQueryModel.ShoesPerPage)
-                .OrderByDescending(s => s.Size.SizeValue)
-                .Select(s => new ListingShoeViewModel
-                {
-                    Id = s.Id,
-                    Brand = s.Brand,
-                    Model = s.Model,
-                    Price = s.Price,
-                    ImageUrl = s.ImageUrl
-                })
-                .ToList();
-
-            var brands = this.data
-                .Shoes
-                .Select(s => s.Brand)
-                .Distinct()
-                .OrderBy(br => br)
-                .ToList();
-
-            query.ShoeCount = shoeCount;
+            query.ShoeCount = queryResult.ShoesCount;
             query.Brands = brands;
-            query.Shoes = shoes;
+            query.Shoes = queryResult.Shoes;
 
             return View(query);
         }

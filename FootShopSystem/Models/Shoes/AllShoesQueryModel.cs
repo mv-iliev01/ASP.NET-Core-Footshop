@@ -1,5 +1,6 @@
 ﻿namespace FootShopSystem.Models.Shoes
 {
+    using FootShopSystem.Services.Shoes;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
@@ -20,6 +21,6 @@
 
         public ShoeSorting Sorting { get; init; }
 
-        public IEnumerable<ListingShoeViewModel> Shoes { get; set; }
+        public IEnumerable<ShoeServiceModel> Shoes { get; set; }
     }
 }
