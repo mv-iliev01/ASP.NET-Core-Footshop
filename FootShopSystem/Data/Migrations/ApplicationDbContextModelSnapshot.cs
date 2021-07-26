@@ -53,6 +53,31 @@ namespace FootShopSystem.Data.Migrations
                     b.ToTable("Colors");
                 });
 
+            modelBuilder.Entity("FootShopSystem.Data.Models.Customer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<int>("PurchasesCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Customers");
+                });
+
             modelBuilder.Entity("FootShopSystem.Data.Models.Designer", b =>
                 {
                     b.Property<int>("Id")
@@ -120,6 +145,9 @@ namespace FootShopSystem.Data.Migrations
                     b.Property<int>("SizeId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("TimeCreated")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
@@ -131,6 +159,21 @@ namespace FootShopSystem.Data.Migrations
                     b.HasIndex("SizeId");
 
                     b.ToTable("Shoes");
+                });
+
+            modelBuilder.Entity("FootShopSystem.Data.Models.ShoesCustomer", b =>
+                {
+                    b.Property<int>("ShoeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ShoeId", "CustomerId");
+
+                    b.HasIndex("CustomerId");
+
+                    b.ToTable("ShoesCustomers");
                 });
 
             modelBuilder.Entity("FootShopSystem.Data.Models.Size", b =>
@@ -211,10 +254,6 @@ namespace FootShopSystem.Data.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -266,8 +305,6 @@ namespace FootShopSystem.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -354,17 +391,6 @@ namespace FootShopSystem.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("FootShopSystem.Data.Models.User", b =>
-                {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
-
-                    b.Property<string>("FullName")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.HasDiscriminator().HasValue("User");
-                });
-
             modelBuilder.Entity("FootShopSystem.Data.Models.Shoe", b =>
                 {
                     b.HasOne("FootShopSystem.Data.Models.Category", "Category")
@@ -398,6 +424,25 @@ namespace FootShopSystem.Data.Migrations
                     b.Navigation("Designer");
 
                     b.Navigation("Size");
+                });
+
+            modelBuilder.Entity("FootShopSystem.Data.Models.ShoesCustomer", b =>
+                {
+                    b.HasOne("FootShopSystem.Data.Models.Customer", "Customer")
+                        .WithMany("ShoesCustomers")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FootShopSystem.Data.Models.Shoe", "Shoe")
+                        .WithMany("ShoesPeoples")
+                        .HasForeignKey("ShoeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("Shoe");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -461,9 +506,19 @@ namespace FootShopSystem.Data.Migrations
                     b.Navigation("Shoes");
                 });
 
+            modelBuilder.Entity("FootShopSystem.Data.Models.Customer", b =>
+                {
+                    b.Navigation("ShoesCustomers");
+                });
+
             modelBuilder.Entity("FootShopSystem.Data.Models.Designer", b =>
                 {
                     b.Navigation("Shoes");
+                });
+
+            modelBuilder.Entity("FootShopSystem.Data.Models.Shoe", b =>
+                {
+                    b.Navigation("ShoesPeoples");
                 });
 
             modelBuilder.Entity("FootShopSystem.Data.Models.Size", b =>

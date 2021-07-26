@@ -1,5 +1,7 @@
 ﻿namespace FootShopSystem.Data.Models
 {
+    using System;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using static DataConstants;
     public class Shoe
@@ -26,6 +28,7 @@
         [MaxLength(DescriptionMaxLength)]
         public string Description { get; set; }
 
+        public DateTime TimeCreated{ get; set; }
 
         public int CategoryId { get; set; }
         public Category Category { get; init; }
@@ -38,5 +41,8 @@
 
         public int DesignerId { get; init; }
         public Designer Designer { get; init; }
+
+        public ICollection<ShoesCustomer> ShoesPeoples { get; set; }
+
     }
 }

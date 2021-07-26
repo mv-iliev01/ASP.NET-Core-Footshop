@@ -31,5 +31,13 @@
             public const int PhoneNumberMinLength = 8;
         }
 
+        public class Customer
+        {
+            public const int CustomerNameMaxLength = 20;
+            public const int CustomerNameMinLength = 2;
+
+            public const int EmailMaxLength = 20;
+            public const int EmailMinMinLength = 5;
+        }
     }
 }
