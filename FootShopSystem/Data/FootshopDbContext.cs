@@ -13,5 +13,7 @@ namespace FootShopSystem.Data
         public DbSet<Category> Categories { get; init; }
         public DbSet<Size> Sizes{ get; init; }
         public DbSet<Color> Colors { get; init; }
+        public DbSet<Designer> Designers { get; init; }
+        public DbSet<User> Users { get; init; }
     }
 }

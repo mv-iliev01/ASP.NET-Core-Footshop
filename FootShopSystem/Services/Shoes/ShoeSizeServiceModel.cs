@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace FootShopSystem.Models.Shoes
+namespace FootShopSystem.Services.Shoes
 {
-    public class ShoeSizeViewModel
+    public class ShoeSizeServiceModel
     {
         public int Id { get; init; }
         public int SizeValue { get; init; }

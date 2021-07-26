@@ -28,12 +28,15 @@
 
 
         public int CategoryId { get; set; }
-        public Category Category { get; set; }
+        public Category Category { get; init; }
 
         public int ColorId { get; set; }
-        public Color Color { get; set; }
+        public Color Color { get; init; }
 
         public int SizeId { get; set; }
-        public Size Size { get; set; }
+        public Size Size { get; init; }
+
+        public int DesignerId { get; init; }
+        public Designer Designer { get; init; }
     }
 }

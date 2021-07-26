@@ -2,10 +2,24 @@
 
 namespace FootShopSystem.Data.Migrations
 {
-    public partial class FourTables : Migration
+    public partial class CategoryColorDesignerShoeSizeUser : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AddColumn<string>(
+                name: "Discriminator",
+                table: "AspNetUsers",
+                type: "nvarchar(max)",
+                nullable: false,
+                defaultValue: "");
+
+            migrationBuilder.AddColumn<string>(
+                name: "FullName",
+                table: "AspNetUsers",
+                type: "nvarchar(20)",
+                maxLength: 20,
+                nullable: true);
+
             migrationBuilder.CreateTable(
                 name: "Categories",
                 columns: table => new
@@ -33,6 +47,21 @@ namespace FootShopSystem.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Designers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Designers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Sizes",
                 columns: table => new
                 {
@@ -51,14 +80,15 @@ namespace FootShopSystem.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Brand = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
-                    Model = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    Brand = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    Model = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
                     Price = table.Column<int>(type: "int", nullable: false),
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
                     ColorId = table.Column<int>(type: "int", nullable: false),
-                    SizeId = table.Column<int>(type: "int", nullable: false)
+                    SizeId = table.Column<int>(type: "int", nullable: false),
+                    DesignerId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -73,6 +103,12 @@ namespace FootShopSystem.Data.Migrations
                         name: "FK_Shoes_Colors_ColorId",
                         column: x => x.ColorId,
                         principalTable: "Colors",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Shoes_Designers_DesignerId",
+                        column: x => x.DesignerId,
+                        principalTable: "Designers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -94,6 +130,11 @@ namespace FootShopSystem.Data.Migrations
                 column: "ColorId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Shoes_DesignerId",
+                table: "Shoes",
+                column: "DesignerId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Shoes_SizeId",
                 table: "Shoes",
                 column: "SizeId");
@@ -111,7 +152,18 @@ namespace FootShopSystem.Data.Migrations
                 name: "Colors");
 
             migrationBuilder.DropTable(
+                name: "Designers");
+
+            migrationBuilder.DropTable(
                 name: "Sizes");
+
+            migrationBuilder.DropColumn(
+                name: "Discriminator",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropColumn(
+                name: "FullName",
+                table: "AspNetUsers");
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿namespace FootShopSystem.Models.Shoes
 {
+    using FootShopSystem.Services.Shoes;
     using System.Collections.Generic;
     using System.ComponentModel;
 
@@ -15,11 +16,11 @@
 
         [DisplayName("Size")]
         public int SizeId { get; init; }
-        public IEnumerable<ShoeSizeViewModel> Sizes { get; set; }
+        public IEnumerable<ShoeSizeServiceModel> Sizes { get; set; }
 
         [DisplayName("Color")]
         public int ColorId { get; init; }
-        public IEnumerable<ShoeColorViewModel> Colors { get; set; }
+        public IEnumerable<ShoeColorServiceModel> Colors { get; set; }
 
     }
 }

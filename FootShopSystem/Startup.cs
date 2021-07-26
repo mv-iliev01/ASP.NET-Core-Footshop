@@ -2,6 +2,7 @@ namespace FootShopSystem
 {
     using FootShopSystem.Data;
     using FootShopSystem.Infrastructures;
+    using FootShopSystem.Services.Designers;
     using FootShopSystem.Services.Shoes;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -15,7 +16,7 @@ namespace FootShopSystem
     {
         public Startup(IConfiguration configuration)
          => Configuration = configuration;
-        
+
 
         public IConfiguration Configuration { get; }
 
@@ -40,6 +41,7 @@ namespace FootShopSystem
                 .AddControllersWithViews();
 
             services.AddTransient<IShoeService, ShoeService>();
+            services.AddTransient<IDesignerService, DesignerService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

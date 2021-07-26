@@ -4,6 +4,7 @@
     using static Data.DataConstants;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using FootShopSystem.Services.Shoes;
 
     public class AddShoeFormModel
     {
@@ -39,9 +40,9 @@
         [DisplayName("Size")]
         public int SizeId { get; init; }
 
-        public IEnumerable<ShoeCategoryViewModel> Categories { get; set; }
-        public IEnumerable<ShoeColorViewModel> Colors { get; set; }
-        public IEnumerable<ShoeSizeViewModel> Sizes { get; set; }
+        public IEnumerable<ShoeCategoryServiceModel> Categories { get; set; }
+        public IEnumerable<ShoeColorServiceModel> Colors { get; set; }
+        public IEnumerable<ShoeSizeServiceModel> Sizes { get; set; }
 
     }
 }

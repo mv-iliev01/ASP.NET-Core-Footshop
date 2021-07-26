@@ -1,34 +1,59 @@
 ﻿namespace FootShopSystem.Controllers
 {
+    using CarRentingSystem.Controllers;
     using FootShopSystem.Data;
     using FootShopSystem.Data.Models;
+    using FootShopSystem.Infrastructures;
     using FootShopSystem.Models.Shoes;
+    using FootShopSystem.Services.Designers;
     using FootShopSystem.Services.Shoes;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using System.Collections.Generic;
     using System.Linq;
 
     public class ShoesController : Controller
     {
-        private readonly FootshopDbContext data;
         private readonly IShoeService shoes;
+        private readonly FootshopDbContext data;
+        private readonly IDesignerService designers;
 
-        public ShoesController(FootshopDbContext data, IShoeService shoes)
+        public ShoesController(
+            FootshopDbContext data,
+            IShoeService shoes,
+            IDesignerService designers)
         {
             this.data = data;
             this.shoes = shoes;
+            this.designers = designers;
         }
 
-        public IActionResult Add() => View(new AddShoeFormModel
+        public IActionResult Add()
         {
-            Categories = this.GetShoeCategories(),
-            Colors = this.GetShoeColors(),
-            Sizes = this.GetShoeSizes()
-        });
+            if (!this.designers.IsDesigner(this.User.Id()))
+            {
+                return RedirectToAction(nameof(DesignerController.Become), "Dealers");
+            }
+
+            return View(new AddShoeFormModel
+            {
+                Categories = this.shoes.GetShoeCategories(),
+                Colors = this.shoes.GetShoeColors(),
+                Sizes = this.shoes.GetShoeSizes()
+            });
+
+        }
 
         [HttpPost]
+        [Authorize]
         public IActionResult Add(AddShoeFormModel shoe)
         {
+            var designerId = this.designers.IdByUser(this.User.Id());
+
+            if (designerId == 0)
+            {
+                return RedirectToAction(nameof(DesignerController.Become), "Designers");
+            }
 
             if (!this.data.Categories.Any(s => s.Id == shoe.CategoryId))
             {
@@ -47,30 +72,24 @@
 
             if (!ModelState.IsValid)
             {
-                shoe.Categories = this.GetShoeCategories();
-                shoe.Colors = this.GetShoeColors();
-                shoe.Sizes = this.GetShoeSizes();
+                shoe.Categories = this.shoes.GetShoeCategories();
+                shoe.Colors = this.shoes.GetShoeColors();
+                shoe.Sizes = this.shoes.GetShoeSizes();
 
                 return View(shoe);
             }
 
-            var shoeData = new Shoe
-            {
-                Brand = shoe.Brand,
-                Model = shoe.Model,
-                Price = shoe.Price,
-                ImageUrl = shoe.ImageUrl,
-                Description = shoe.Description,
-                CategoryId = shoe.CategoryId,
-                ColorId = shoe.ShoeColorsId,
-                SizeId = shoe.SizeId
-            };
+            this.shoes.Create(shoe.Brand,
+                shoe.Model,
+                shoe.Price,
+                shoe.ImageUrl,
+                shoe.Description,
+                shoe.CategoryId,
+                shoe.ShoeColorsId,
+                shoe.SizeId,
+                designerId);
 
-            this.data.Shoes.Add(shoeData);
-
-            this.data.SaveChanges();
-
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(nameof(All));
         }
 
         public IActionResult All([FromQuery] AllShoesQueryModel query)
@@ -101,18 +120,18 @@
             var colors = this.data
                 .Shoes
                 .Where(s => s.Model == shoeModel)
-                .Select(s => new ShoeColorViewModel
+                .Select(s => new ShoeColorServiceModel
                 {
                     Id = s.Id,
                     Name = s.Color.Name,
-                    ShoeColorImg=s.ImageUrl
+                    ShoeColorImg = s.ImageUrl
                 })
                 .ToList();
 
             var sizes = this.data
             .Shoes
             .Where(s => s.Model == shoeModel)
-            .Select(s => new ShoeSizeViewModel
+            .Select(s => new ShoeSizeServiceModel
             {
                 Id = s.Id,
                 SizeValue = s.Size.SizeValue
@@ -138,34 +157,88 @@
             return View(details);
         }
 
-        private IEnumerable<ShoeCategoryViewModel> GetShoeCategories()
-        => this.data
-            .Categories
-            .Select(c => new ShoeCategoryViewModel
-            {
-                Id = c.Id,
-                Name = c.Name
-            })
-            .ToList();
+        public IActionResult MyShoes()
+        {
+            var myShoes = this.shoes.ByUser(this.User.Id());
 
-        private IEnumerable<ShoeColorViewModel> GetShoeColors()
-        => this.data
-            .Colors
-            .Select(c => new ShoeColorViewModel
-            {
-                Id = c.Id,
-                Name = c.Name
-            })
-            .ToList();
+            return View(myShoes);
+        }
 
-        private IEnumerable<ShoeSizeViewModel> GetShoeSizes()
-        => this.data
-            .Sizes
-            .Select(s => new ShoeSizeViewModel
+        [Authorize]
+        public IActionResult Edit(int id)
+        {
+            var userId = this.User.Id();
+
+            if (!this.designers.IsDesigner(this.User.Id()))
             {
-                Id = s.Id,
-                SizeValue = s.SizeValue
-            })
-            .ToList();
+                return RedirectToAction(nameof(DesignerController.Become), "Dealers");
+            }
+            var car = this.shoes.Details(id);
+
+            if (car.UserId != userId)
+            {
+                return Unauthorized();
+            }
+            var shoe = this.shoes.Details(id);
+
+            return View(new AddShoeFormModel
+            {
+                Brand = shoe.Brand,
+                Model = shoe.Model,
+                Price = shoe.Price,
+                ImageUrl = shoe.ImageUrl,
+                Description = shoe.Description,
+                CategoryId = shoe.CategoryId,
+                ShoeColorsId = shoe.ColorId,
+                SizeId = shoe.SizeId,
+                Categories = this.shoes.GetShoeCategories(),
+                Colors = this.shoes.GetShoeColors(),
+                Sizes = this.shoes.GetShoeSizes()
+            });
+        }
+        [Authorize]
+        [HttpPost]
+
+        public IActionResult Edit(int id, AddShoeFormModel shoe)
+        {
+
+            var dealerId = this.designers.IdByUser(this.User.Id());
+
+            if (dealerId == 0)
+            {
+                return RedirectToAction(nameof(DesignerController.Become), "Dealers");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                shoe.Categories = this.shoes.GetShoeCategories();
+
+                return View(shoe);
+            }
+
+            if (!this.shoes.IsByDealer(id, dealerId))
+            {
+                return BadRequest();
+            }
+
+            var shoeEdited = this.shoes.Edit(
+                 id,
+                 shoe.Brand,
+                 shoe.Model,
+                 shoe.Price,
+                 shoe.ImageUrl,
+                 shoe.Description,
+                 shoe.CategoryId,
+                 shoe.ShoeColorsId,
+                 shoe.SizeId);
+
+            if(!shoeEdited)
+            {
+                return BadRequest();
+            }
+
+            return RedirectToAction(nameof(All));
+        }
     }
 }
+

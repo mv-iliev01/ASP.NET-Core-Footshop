@@ -1,0 +1,11 @@
+﻿@model IEnumerable<ShoeServiceModel>
+
+@{  ViewBag.Title = "My Cars";
+    ViewBag.AllowShoeEdit = true; }
+
+@if (!Model.Any())
+{
+<h2 class="text-center">You do not have any cars yet!</h2>}
+
+<partial name="_ShoesPartial" model="@Model" />
+

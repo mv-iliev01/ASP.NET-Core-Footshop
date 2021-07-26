@@ -1,6 +1,6 @@
-﻿namespace FootShopSystem.Models.Shoes
+﻿namespace FootShopSystem.Services.Shoes
 {
-    public class ShoeCategoryViewModel
+    public class ShoeCategoryServiceModel
     {
         public int Id { get; init; }
 

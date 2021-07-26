@@ -33,8 +33,7 @@ namespace FootShopSystem.Infrastructures
             {
                 new Category { Name = "Boots" },
                 new Category { Name = "Trainers" },
-                new Category { Name = "Sandals" },
-                new Category { Name = "Open Top" }
+                new Category { Name = "Sandals" }
             });
             data.Colors.AddRange(new[]
             {

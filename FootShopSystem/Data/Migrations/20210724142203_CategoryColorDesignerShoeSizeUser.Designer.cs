@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FootShopSystem.Data.Migrations
 {
     [DbContext(typeof(FootshopDbContext))]
-    [Migration("20210712134049_FourTables")]
-    partial class FourTables
+    [Migration("20210724142203_CategoryColorDesignerShoeSizeUser")]
+    partial class CategoryColorDesignerShoeSizeUser
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -55,6 +55,32 @@ namespace FootShopSystem.Data.Migrations
                     b.ToTable("Colors");
                 });
 
+            modelBuilder.Entity("FootShopSystem.Data.Models.Designer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Designers");
+                });
+
             modelBuilder.Entity("FootShopSystem.Data.Models.Shoe", b =>
                 {
                     b.Property<int>("Id")
@@ -64,8 +90,8 @@ namespace FootShopSystem.Data.Migrations
 
                     b.Property<string>("Brand")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
@@ -78,14 +104,17 @@ namespace FootShopSystem.Data.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
+                    b.Property<int>("DesignerId")
+                        .HasColumnType("int");
+
                     b.Property<string>("ImageUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Model")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.Property<int>("Price")
                         .HasColumnType("int");
@@ -98,6 +127,8 @@ namespace FootShopSystem.Data.Migrations
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("ColorId");
+
+                    b.HasIndex("DesignerId");
 
                     b.HasIndex("SizeId");
 
@@ -182,6 +213,10 @@ namespace FootShopSystem.Data.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -233,6 +268,8 @@ namespace FootShopSystem.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -319,6 +356,17 @@ namespace FootShopSystem.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("FootShopSystem.Data.Models.User", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+                    b.Property<string>("FullName")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.HasDiscriminator().HasValue("User");
+                });
+
             modelBuilder.Entity("FootShopSystem.Data.Models.Shoe", b =>
                 {
                     b.HasOne("FootShopSystem.Data.Models.Category", "Category")
@@ -333,6 +381,12 @@ namespace FootShopSystem.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("FootShopSystem.Data.Models.Designer", "Designer")
+                        .WithMany("Shoes")
+                        .HasForeignKey("DesignerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("FootShopSystem.Data.Models.Size", "Size")
                         .WithMany("Shoes")
                         .HasForeignKey("SizeId")
@@ -342,6 +396,8 @@ namespace FootShopSystem.Data.Migrations
                     b.Navigation("Category");
 
                     b.Navigation("Color");
+
+                    b.Navigation("Designer");
 
                     b.Navigation("Size");
                 });
@@ -403,6 +459,11 @@ namespace FootShopSystem.Data.Migrations
                 });
 
             modelBuilder.Entity("FootShopSystem.Data.Models.Color", b =>
+                {
+                    b.Navigation("Shoes");
+                });
+
+            modelBuilder.Entity("FootShopSystem.Data.Models.Designer", b =>
                 {
                     b.Navigation("Shoes");
                 });
