@@ -183,7 +183,7 @@
         }
 
 
-        public bool IsByDealer(int shoeId, int designerId)
+        public bool IsByDesigner(int shoeId, int designerId)
         => this.data
                 .Shoes
                 .Any(c => c.Id == shoeId && c.DesignerId == designerId);

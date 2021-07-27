@@ -200,9 +200,9 @@
         public IActionResult Edit(int id, AddShoeFormModel shoe)
         {
 
-            var dealerId = this.designers.IdByUser(this.User.Id());
+            var designerId = this.designers.IdByUser(this.User.Id());
 
-            if (dealerId == 0)
+            if (designerId == 0)
             {
                 return RedirectToAction(nameof(DesignerController.Become), "Dealers");
             }
@@ -214,7 +214,7 @@
                 return View(shoe);
             }
 
-            if (!this.shoes.IsByDealer(id, dealerId))
+            if (!this.shoes.IsByDesigner(id, designerId))
             {
                 return BadRequest();
             }

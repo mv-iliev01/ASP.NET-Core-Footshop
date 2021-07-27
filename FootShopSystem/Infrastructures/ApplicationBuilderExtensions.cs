@@ -3,6 +3,7 @@ using FootShopSystem.Data.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Linq;
 
 namespace FootShopSystem.Infrastructures
@@ -64,6 +65,22 @@ namespace FootShopSystem.Infrastructures
             new Size { SizeValue = 44 },
             new Size { SizeValue = 45 },
             });
+
+
+            //var shoe = new Shoe
+            //{
+            //    Brand = "Nike",
+            //    Model = "Airmax",
+            //    Price = 200,
+            //    ImageUrl = "https://www.sportvision.bg/files/thumbs/files/images/slike_proizvoda/media/CW1/CW1626-002/images/thumbs_800/CW1626-002_800_800px.jpg",
+            //    Description = "The best shoe ever created you should try it !",
+            //    TimeCreated = DateTime.Now,
+            //    CategoryId = 1,
+            //    ColorId = 1,
+            //    SizeId = 1
+            //};
+
+            //data.Shoes.Add(shoe);
 
             data.SaveChanges();
         }

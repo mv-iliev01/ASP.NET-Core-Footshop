@@ -37,7 +37,7 @@ namespace FootShopSystem.Services.Shoes
 
         IEnumerable<ShoeServiceModel> ByUser(string userId);
 
-        bool IsByDealer(int carId, int dealerId);
+        bool IsByDesigner(int carId, int dealerId);
         IEnumerable<string> AllShoeBrands();
 
         IEnumerable<ShoeCategoryServiceModel> GetShoeCategories();
