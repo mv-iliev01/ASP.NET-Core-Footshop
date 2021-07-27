@@ -2,14 +2,12 @@
 {
     using CarRentingSystem.Controllers;
     using FootShopSystem.Data;
-    using FootShopSystem.Data.Models;
     using FootShopSystem.Infrastructures;
     using FootShopSystem.Models.Shoes;
     using FootShopSystem.Services.Designers;
     using FootShopSystem.Services.Shoes;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using System.Collections.Generic;
     using System.Linq;
 
     public class ShoesController : Controller
