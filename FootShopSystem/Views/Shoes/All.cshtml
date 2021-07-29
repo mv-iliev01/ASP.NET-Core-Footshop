@@ -1,5 +1,6 @@
 ﻿@model AllShoesQueryModel
 
+@{ ViewData["Title"] = "All shoes"; }
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,8 +20,7 @@
                         <option value="">All</option>
                         @foreach (var brand in Model.Brands)
                         {
-                            <option value="@brand">@brand</option>
-                        }
+            <option value="@brand">@brand</option>}
                     </select>
                 </div>
             </div>
@@ -32,15 +32,13 @@
         </div>
     </form>
 
-    @{
-        var previousPage = Model.CurrentPage - 1;
-        if (previousPage < 1)
-        {
-            previousPage = 1;
-        }
+    @{ var previousPage = Model.CurrentPage - 1;
+                    if (previousPage < 1)
+                    {
+                        previousPage = 1;
+                    }
 
-        var maxPage = Math.Ceiling((double)Model.ShoeCount / AllShoesQueryModel.ShoesPerPage);
-    }
+                    var maxPage = Math.Ceiling((double)Model.ShoeCount / AllShoesQueryModel.ShoesPerPage); }
 
     <div class="row">
         <div class="col-md-6">
@@ -110,14 +108,13 @@
 
             @foreach (var shoe in Model.Shoes)
             {
-                <div class="item">
-                    <img src="@shoe.ImageUrl" class="picture" asp-append-version="true">
-                    <label class="text">@shoe.Brand</label>
-                    <label class="text">@shoe.Model</label>
-                    <label class="textPrice">@shoe.Price BGN</label>
-                    <a href="/Shoes/Details?ShoeId=@shoe.Id" class="btn btn-info detailsBtn">Details</a>
-                </div>
-            }
+<div class="item">
+    <img src="@shoe.ImageUrl" class="picture" asp-append-version="true">
+    <label class="text">@shoe.Brand</label>
+    <label class="text">@shoe.Model</label>
+    <label class="textPrice">@shoe.Price BGN</label>
+    <a href="/Shoes/Details?ShoeId=@shoe.Id" class="btn btn-info detailsBtn">Details</a>
+</div>            }
         </div>
     </div>
 

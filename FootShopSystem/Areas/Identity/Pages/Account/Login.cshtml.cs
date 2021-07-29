@@ -1,22 +1,22 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using FootShopSystem.Data.Models;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
-using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
-
 namespace FootShopSystem.Areas.Identity.Pages.Account
 {
+    using System.ComponentModel.DataAnnotations;
+    using System.Threading.Tasks;
+
     [AllowAnonymous]
     public class LoginModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly SignInManager<User> signInManager;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager)
+        public LoginModel(SignInManager<User> signInManager)
         {
-            _signInManager = signInManager;
+            this.signInManager = signInManager;
         }
 
         [BindProperty]
@@ -62,7 +62,7 @@ namespace FootShopSystem.Areas.Identity.Pages.Account
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(Input.Username, Input.Password,false,false);
+                var result = await signInManager.PasswordSignInAsync(Input.Username, Input.Password, false, false);
                 if (result.Succeeded)
                 {
                     return LocalRedirect(returnUrl);

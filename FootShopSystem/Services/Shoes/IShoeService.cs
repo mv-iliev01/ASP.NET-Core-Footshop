@@ -1,8 +1,7 @@
-﻿using FootShopSystem.Models.Shoes;
-using System.Collections.Generic;
-
-namespace FootShopSystem.Services.Shoes
+﻿namespace FootShopSystem.Services.Shoes
 {
+    using System;
+    using System.Collections.Generic;
     public interface IShoeService
     {
         ShoeQueryServiceModel All(
@@ -19,6 +18,7 @@ namespace FootShopSystem.Services.Shoes
             int price,
             string imageUrl,
             string description,
+            DateTime TimeCreated,
             int categoryId,
             int shoeColorsId,
             int sizeId,

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 namespace FootShopSystem.Data
 {
-    public class FootshopDbContext : IdentityDbContext
+    public class FootshopDbContext : IdentityDbContext<User>
     {
         public FootshopDbContext(DbContextOptions<FootshopDbContext> options)
             : base(options)

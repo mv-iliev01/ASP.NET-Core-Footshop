@@ -5,6 +5,7 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using FootShopSystem.Services.Shoes;
+    using System;
 
     public class AddShoeFormModel
     {
@@ -28,8 +29,9 @@
         [Required]
         [StringLength(DescriptionMaxLength
             , MinimumLength = DescriptionMinLength,
-            ErrorMessage ="The filed Description must be a text with minimum length of {2}.")]
+            ErrorMessage = "The filed Description must be a text with minimum length of {2}.")]
         public string Description { get; init; }
+        public DateTime TimeCreated { get; init; }
 
         [DisplayName("Category")]
         public int CategoryId { get; init; }

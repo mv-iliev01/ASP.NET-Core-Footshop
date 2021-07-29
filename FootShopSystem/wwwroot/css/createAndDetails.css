@@ -6,7 +6,7 @@
 .center {
     margin: auto;
     border: 3px solid #73AD21;
-    height: 800px;
+    height: 700px;
     
 }
 .productInfo{
@@ -92,7 +92,21 @@ ul button{
     font-weight: 700;
     float:right;
 }
-.sizeContainer{
+
+.addToFavBtn {
+    text-align: center;
+    background: blue;
+    color: white;
+    width: 100%;
+    height: 45px;
+    border: none;
+    padding: .6875rem 1rem;
+    font-weight: 700;
+    float: right;
+}
+
+.sizeContainer
+{
     width:150px;
 }
 .favoritesBtn{

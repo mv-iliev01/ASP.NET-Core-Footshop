@@ -2,6 +2,7 @@
 {
     using FootShopSystem.Data;
     using FootShopSystem.Data.Models;
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     public class ShoeService : IShoeService
@@ -127,6 +128,7 @@
             int price,
             string imageUrl,
             string description,
+            DateTime TimeCreated,
             int categoryId,
             int shoeColorsId,
             int sizeId,
@@ -139,6 +141,7 @@
                 Price = price,
                 ImageUrl = imageUrl,
                 Description =description,
+                TimeCreated =DateTime.UtcNow,
                 CategoryId = categoryId,
                 ColorId = shoeColorsId,
                 SizeId = sizeId,

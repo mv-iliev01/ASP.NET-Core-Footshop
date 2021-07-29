@@ -1,6 +1,7 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model HomeShoeListingViewModel
+
+@{ ViewData["Title"] = "Home Page"; }
+
 <link rel="stylesheet" href="~/css/Home.css">
 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
     <ol class="carousel-indicators">
@@ -78,47 +79,22 @@
         <h1>Newest Models</h1>
     </div>
     <div class="card-deck mt-4">
-        <div class="card">
-            <img class="card-img-top Pictr" src="~/img/bg.jpg" alt="Card image cap">
-            <div class="card-body text-center">
-                <h5 class="card-title">Nike</h5>
-                <h5 class="card-title">X-Future</h5>
-                <h5 class="card-title">Red</h5>
-                <h5 class="card-title">200lv</h5>
+        @foreach (var shoe in Model.Shoes)
+         {
+            <div class="card" style="width: 18rem;">
+                <img src="@shoe.ImageUrl" class="card-img-top">
+                <div class="card-body">
+                    <h5 class="card-title">@shoe.Brand</h5>
+                    <p class="card-text">@shoe.Brand @shoe.Model - @shoe.Color</p>
+                    <p class="card-text">@shoe.Price lv</p>
+                </div>
                 <p class="card-text">
-                    <button class="btn btn-danger">See More</button>
+                    <a href="/Shoes/Details?ShoeId=@shoe.Id" class="btn btn-danger detailsBtn">See More</a>
                 </p>
-                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-            </div>
-        </div>
+                <p class="card-text"><small class="text-muted">Created on @shoe.TimeCreated </small></p>
 
-        <div class="card">
-            <img class="card-img-top Pictr" src="/img/bg3.jpg">
-            <div class="card-body text-center">
-                <h5 class="card-title">Nike</h5>
-                <h5 class="card-title">X-Future</h5>
-                <h5 class="card-title">Red</h5>
-                <h5 class="card-title">200lv</h5>
-                <p class="card-text">
-                    <button class="btn btn-danger">See More</button>
-                </p>
-                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
             </div>
-        </div>
-
-        <div class="card">
-            <img class="card-img-top Pictr" src="/img/bg2.jpg">
-            <div class="card-body text-center">
-                <h5 class="card-title">Nike</h5>
-                <h5 class="card-title">X-Future</h5>
-                <h5 class="card-title">Red</h5>
-                <h5 class="card-title">200lv</h5>
-                <p class="card-text">
-                    <button class="btn btn-danger">See More</button>
-                </p>
-                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-            </div>
-        </div>
-
+         }
     </div>
 </div>
+

@@ -12,17 +12,17 @@
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<User> signInManager;
+        private readonly UserManager<User> userManager;
         private readonly FootshopDbContext data;
 
         public RegisterModel(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
+            UserManager<User> userManager,
+            SignInManager<User> signInManager,
             FootshopDbContext data)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
+            this.userManager = userManager;
+            this.signInManager = signInManager;
             this.data = data;
         }
 
@@ -65,13 +65,13 @@
 
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = Input.Username, Email = Input.Email };
-                var result = await _userManager.CreateAsync(user, Input.Password);
+                var user = new User { UserName = Input.Username, Email = Input.Email };
+                var result = await userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
                     var customer = new User { Fullname = Input.Username, Email = Input.Email};
                     
-                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    await signInManager.SignInAsync(user, isPersistent: false);
                     return LocalRedirect(returnUrl);
 
                 }

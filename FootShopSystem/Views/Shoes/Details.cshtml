@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@{ ViewData["Title"] = "Details"; }
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -14,47 +16,43 @@
         </div>
 
         <div class="leftDiv">
-            <span class="nameFormated">Обувки @Model.Brand @Model.Model</span>
+            <span class="nameFormated">Shoe @Model.Brand @Model.Model</span>
             <br>
             <div>
-                <p class="pUpper">@Model.Price</p>
-                <p>Спестяваш 30%</p>
+            <p class="pUpper">Model - @Model.Model</p>
+                <p class="pUpper">Price - @Model.Price lv</p>
             </div>
             <hr>
             <br>
             <div class="panel-body">
                 <div class="shoeColor">
-                    <p class="bold">Избери Цвят: </p>
+                    <p class="bold">Choose Color: </p>
                     @foreach (var shoe in Model.Colors)
                     {
-                        <img src="@shoe.ShoeColorImg">
+                        <a href="/Shoes/Details?ShoeId=@shoe.Id">
+                         <img src="@shoe.ShoeColorImg">
+                        </a>
                     }
                 </div>
                 <div class="chooseSize">
-                    <p class="bold">Избери Размер: </p>
+                    <p class="bold">Choose Size : </p>
                     <ul>
                         @foreach (var size in Model.Sizes)
-                        {
+                         {
                             <div class="sizeContainer">
                                 <button class="sizeButton">@size.SizeValue</button>
                                 <label>(10 in stock)</label>
                             </div>
-                        }
+                         }
                     </ul>
                 </div>
                 <br>
                 <div class="quantityAndBuy">
-                    <label class="bold">Количество: </label>
                     <br>
-                    <button class="quantityBtn">m</button>
-                    <input class="inputText" placeholder="1">
-                    <button class="quantityBtn">p</button>
-                    <button class="addToCartBtn">Добави в количката</button>
+                    <button class="addToCartBtn m-2">Add to Cart</button>
+                    <button class="addToFavBtn m-2" >Add to Favourites</button>
                 </div>
                 <br>
-                <div>
-                    <button class="favoritesBtn"><img height="20px" width="20px" src="/images/hearth.png">Add to favorites</button>
-                </div>
             </div>
         </div>
     </div>

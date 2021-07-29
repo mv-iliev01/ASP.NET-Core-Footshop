@@ -42,6 +42,8 @@
         public int DesignerId { get; init; }
         public Designer Designer { get; init; }
 
+        public int UserId { get; init; }
+        public User User { get; init; }
 
     }
 }

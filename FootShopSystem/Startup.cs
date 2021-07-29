@@ -27,6 +27,7 @@ namespace FootShopSystem
             services.AddDbContext<FootshopDbContext>(options => options
             .UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddDefaultIdentity<User>(options =>

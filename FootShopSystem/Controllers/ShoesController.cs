@@ -82,6 +82,7 @@
                 shoe.Price,
                 shoe.ImageUrl,
                 shoe.Description,
+                shoe.TimeCreated,
                 shoe.CategoryId,
                 shoe.ShoeColorsId,
                 shoe.SizeId,
