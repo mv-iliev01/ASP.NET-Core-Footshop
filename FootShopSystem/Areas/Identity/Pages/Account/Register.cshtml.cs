@@ -69,10 +69,8 @@
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
-                    var customer = new Customer { Username = Input.Username, Email = Input.Email, PurchasesCount = 0 };
-                    this.data.Customers.Add(customer);
-                    this.data.SaveChanges();
-
+                    var customer = new User { Fullname = Input.Username, Email = Input.Email};
+                    
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return LocalRedirect(returnUrl);
 

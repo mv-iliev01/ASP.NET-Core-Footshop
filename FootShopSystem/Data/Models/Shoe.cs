@@ -42,7 +42,6 @@
         public int DesignerId { get; init; }
         public Designer Designer { get; init; }
 
-        public ICollection<ShoesCustomer> ShoesPeoples { get; set; }
 
     }
 }

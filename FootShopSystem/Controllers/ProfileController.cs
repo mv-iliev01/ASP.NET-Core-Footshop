@@ -27,16 +27,16 @@
         public IActionResult AccountPage()
         {
             var myShoesCount = shoes.ByUser(this.User.Id()).Count();
-            var username = this.data.Customers.Select(c => c.Username).FirstOrDefault(); ;
-            var email = this.data.Customers.Select(c => c.Email).FirstOrDefault();
-            var purchasesCount = this.data.Customers.Select(c => c.PurchasesCount).Count();
+            //var username = this.data.Customers.Select(c => c.Username).FirstOrDefault(); ;
+            //var email = this.data.Customers.Select(c => c.Email).FirstOrDefault();
+            //var purchasesCount = this.data.Customers.Select(c => c.PurchasesCount).Count();
 
-            return View(new ProfileDataViewModel 
+            return View(new ProfileDataViewModel
             {
-                MyShoeCount=myShoesCount,
-                Username=username,
-                Email=email,
-                PurchasesCount=purchasesCount
+                MyShoeCount = myShoesCount,
+                //Username = username,
+                //Email = email,
+                //PurchasesCount = purchasesCount
             });
         }
     }

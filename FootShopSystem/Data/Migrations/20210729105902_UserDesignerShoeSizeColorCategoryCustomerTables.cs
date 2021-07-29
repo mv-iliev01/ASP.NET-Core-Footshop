@@ -34,21 +34,6 @@ namespace FootShopSystem.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Customers",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Username = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    PurchasesCount = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Customers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Designers",
                 columns: table => new
                 {
@@ -122,30 +107,6 @@ namespace FootShopSystem.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "ShoesCustomers",
-                columns: table => new
-                {
-                    CustomerId = table.Column<int>(type: "int", nullable: false),
-                    ShoeId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ShoesCustomers", x => new { x.ShoeId, x.CustomerId });
-                    table.ForeignKey(
-                        name: "FK_ShoesCustomers_Customers_CustomerId",
-                        column: x => x.CustomerId,
-                        principalTable: "Customers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ShoesCustomers_Shoes_ShoeId",
-                        column: x => x.ShoeId,
-                        principalTable: "Shoes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_Shoes_CategoryId",
                 table: "Shoes",
@@ -165,21 +126,10 @@ namespace FootShopSystem.Data.Migrations
                 name: "IX_Shoes_SizeId",
                 table: "Shoes",
                 column: "SizeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ShoesCustomers_CustomerId",
-                table: "ShoesCustomers",
-                column: "CustomerId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "ShoesCustomers");
-
-            migrationBuilder.DropTable(
-                name: "Customers");
-
             migrationBuilder.DropTable(
                 name: "Shoes");
 

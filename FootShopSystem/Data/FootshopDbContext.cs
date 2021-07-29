@@ -14,14 +14,11 @@ namespace FootShopSystem.Data
         public DbSet<Size> Sizes{ get; init; }
         public DbSet<Color> Colors { get; init; }
         public DbSet<Designer> Designers { get; init; }
-        public DbSet<Customer> Customers { get; init; }
-        public DbSet<ShoesCustomer> ShoesCustomers { get; init; }
 
           
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<ShoesCustomer>().HasKey(sc => new { sc.ShoeId, sc.CustomerId });
         }
 
     }

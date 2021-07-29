@@ -1,9 +1,10 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using FootShopSystem.Services.Designers;
 @using FootShopSystem.Infrastructures;
+@using FootShopSystem.Data.Models;
 
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
 @inject IDesignerService Designers
 
 <ul class="navbar-nav">

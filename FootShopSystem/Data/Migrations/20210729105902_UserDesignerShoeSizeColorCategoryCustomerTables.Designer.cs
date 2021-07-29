@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FootShopSystem.Data.Migrations
 {
     [DbContext(typeof(FootshopDbContext))]
-    [Migration("20210726132315_UserDesignerShoeSizeColorCategoryCustomerTables")]
+    [Migration("20210729105902_UserDesignerShoeSizeColorCategoryCustomerTables")]
     partial class UserDesignerShoeSizeColorCategoryCustomerTables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -18,7 +18,7 @@ namespace FootShopSystem.Data.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.5")
+                .HasAnnotation("ProductVersion", "5.0.8")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("FootShopSystem.Data.Models.Category", b =>
@@ -53,31 +53,6 @@ namespace FootShopSystem.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Colors");
-                });
-
-            modelBuilder.Entity("FootShopSystem.Data.Models.Customer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<int>("PurchasesCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("FootShopSystem.Data.Models.Designer", b =>
@@ -161,21 +136,6 @@ namespace FootShopSystem.Data.Migrations
                     b.HasIndex("SizeId");
 
                     b.ToTable("Shoes");
-                });
-
-            modelBuilder.Entity("FootShopSystem.Data.Models.ShoesCustomer", b =>
-                {
-                    b.Property<int>("ShoeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ShoeId", "CustomerId");
-
-                    b.HasIndex("CustomerId");
-
-                    b.ToTable("ShoesCustomers");
                 });
 
             modelBuilder.Entity("FootShopSystem.Data.Models.Size", b =>
@@ -428,25 +388,6 @@ namespace FootShopSystem.Data.Migrations
                     b.Navigation("Size");
                 });
 
-            modelBuilder.Entity("FootShopSystem.Data.Models.ShoesCustomer", b =>
-                {
-                    b.HasOne("FootShopSystem.Data.Models.Customer", "Customer")
-                        .WithMany("ShoesCustomers")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("FootShopSystem.Data.Models.Shoe", "Shoe")
-                        .WithMany("ShoesPeoples")
-                        .HasForeignKey("ShoeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
-
-                    b.Navigation("Shoe");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -508,19 +449,9 @@ namespace FootShopSystem.Data.Migrations
                     b.Navigation("Shoes");
                 });
 
-            modelBuilder.Entity("FootShopSystem.Data.Models.Customer", b =>
-                {
-                    b.Navigation("ShoesCustomers");
-                });
-
             modelBuilder.Entity("FootShopSystem.Data.Models.Designer", b =>
                 {
                     b.Navigation("Shoes");
-                });
-
-            modelBuilder.Entity("FootShopSystem.Data.Models.Shoe", b =>
-                {
-                    b.Navigation("ShoesPeoples");
                 });
 
             modelBuilder.Entity("FootShopSystem.Data.Models.Size", b =>

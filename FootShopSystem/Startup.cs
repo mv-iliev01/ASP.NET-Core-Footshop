@@ -1,6 +1,7 @@
 namespace FootShopSystem
 {
     using FootShopSystem.Data;
+    using FootShopSystem.Data.Models;
     using FootShopSystem.Infrastructures;
     using FootShopSystem.Services.Designers;
     using FootShopSystem.Services.Shoes;
@@ -28,13 +29,14 @@ namespace FootShopSystem
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddDefaultIdentity<IdentityUser>(options =>
+            services.AddDefaultIdentity<User>(options =>
             {
                 options.Password.RequireDigit = false;
                 options.Password.RequireLowercase = false;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = false;
             })
+            .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<FootshopDbContext>();
 
             services
