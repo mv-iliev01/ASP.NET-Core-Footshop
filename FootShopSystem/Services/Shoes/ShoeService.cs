@@ -2,6 +2,7 @@
 {
     using FootShopSystem.Data;
     using FootShopSystem.Data.Models;
+    using FootShopSystem.Models.Shoes;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -103,24 +104,74 @@
             })
             .ToList();
 
-        public ShoeDetailsServiceModel Details(int id)
+        public string GetShoeModel(int shoeId)
+            => this.data
+                 .Shoes
+                 .Where(s => s.Id == shoeId)
+                .Select(s => s.Model)
+                .FirstOrDefault();
+
+        public IEnumerable<ShoeColorServiceModel> GetDetailsShoeColor(string shoeModel)
+        => this.data
+                .Shoes
+                .Where(s => s.Model == shoeModel)
+                .Select(s => new ShoeColorServiceModel
+                {
+                    Id = s.Id,
+                    Name = s.Color.Name,
+                    ShoeColorImg = s.ImageUrl
+                })
+                .ToList();
+        public IEnumerable<ShoeSizeServiceModel> GetDetailsShoeSizes(string shoeModel)
         => this.data
             .Shoes
-            .Where(s => s.Id == id)
-            .Select(s => new ShoeDetailsServiceModel
+            .Where(s => s.Model == shoeModel)
+            .Select(s => new ShoeSizeServiceModel
             {
-                Id=s.Id,
-                Brand=s.Brand,
-                Model=s.Model,
-                ImageUrl=s.ImageUrl,
-                Price=s.Price,
-                Description=s.Description,
-                DesignerId = s.Designer.Id,
-                DesignerName=s.Designer.Name,
-                UserId=s.Designer.UserId
-
+                Id = s.Id,
+                SizeValue = s.Size.SizeValue
             })
-            .FirstOrDefault();
+            .ToList();
+
+
+        public ShoeDetailsListingServiceModel GetShoeDetails(int shoeId,
+            IEnumerable<ShoeSizeServiceModel> sizes,
+            IEnumerable<ShoeColorServiceModel> colors)
+        => this.data
+                .Shoes
+                .Where(s => s.Id == shoeId)
+                .Select(s => new ShoeDetailsListingServiceModel
+                {
+                    Id = s.Id,
+                    Price = s.Price,
+                    Brand = s.Brand,
+                    Model = s.Model,
+                    ImageUrl = s.ImageUrl,
+                    Description = s.Description,
+                    Sizes = sizes,
+                    Colors = colors
+                })
+                .FirstOrDefault();
+
+        public ShoeDetailsServiceModel Details(int id)
+                => this.data
+                    .Shoes
+                    .Where(s => s.Id == id)
+                    .Select(s => new ShoeDetailsServiceModel
+                    {
+                        Id = s.Id,
+                        Brand = s.Brand,
+                        Model = s.Model,
+                        ImageUrl = s.ImageUrl,
+                        Price = s.Price,
+                        Description = s.Description,
+                        DesignerId = s.Designer.Id,
+                        DesignerName = s.Designer.Name,
+                        UserId = s.Designer.UserId
+
+                    })
+                    .FirstOrDefault();
+
 
         public int Create(
             string brand,
@@ -136,12 +187,12 @@
         {
             var shoeData = new Shoe
             {
-                Brand =brand,
+                Brand = brand,
                 Model = model,
                 Price = price,
                 ImageUrl = imageUrl,
-                Description =description,
-                TimeCreated =DateTime.UtcNow,
+                Description = description,
+                TimeCreated = DateTime.UtcNow,
                 CategoryId = categoryId,
                 ColorId = shoeColorsId,
                 SizeId = sizeId,
@@ -169,7 +220,7 @@
             var shoeData = this.data
                 .Shoes
                 .Find(id);
-            
+
             shoeData.Brand = brand;
             shoeData.Model = model;
             shoeData.Price = price;
@@ -190,6 +241,7 @@
         => this.data
                 .Shoes
                 .Any(c => c.Id == shoeId && c.DesignerId == designerId);
+
         
     }
 }

@@ -1,5 +1,6 @@
 ﻿namespace FootShopSystem.Services.Shoes
 {
+    using FootShopSystem.Models.Shoes;
     using System;
     using System.Collections.Generic;
     public interface IShoeService
@@ -45,5 +46,15 @@
         IEnumerable<ShoeColorServiceModel> GetShoeColors();
 
         IEnumerable<ShoeSizeServiceModel> GetShoeSizes();
+
+        IEnumerable<ShoeColorServiceModel> GetDetailsShoeColor(string shoeModel);
+
+        public IEnumerable<ShoeSizeServiceModel> GetDetailsShoeSizes(string shoeModel);
+
+        public ShoeDetailsListingServiceModel GetShoeDetails(int shoeId,
+            IEnumerable<ShoeSizeServiceModel> sizes,
+            IEnumerable<ShoeColorServiceModel> colors);
+
+        string GetShoeModel(int shoeId);
     }
 }

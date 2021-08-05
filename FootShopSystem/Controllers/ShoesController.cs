@@ -2,28 +2,36 @@
 {
     using CarRentingSystem.Controllers;
     using FootShopSystem.Data;
+    using FootShopSystem.Data.Models;
     using FootShopSystem.Infrastructures;
     using FootShopSystem.Models.Shoes;
     using FootShopSystem.Services.Designers;
     using FootShopSystem.Services.Shoes;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using System.Linq;
 
     public class ShoesController : Controller
     {
         private readonly IShoeService shoes;
-        private readonly FootshopDbContext data;
         private readonly IDesignerService designers;
+        private readonly FootshopDbContext data;
+        private readonly SignInManager<User> signInManager;
+        private readonly UserManager<User> userManager;
 
         public ShoesController(
             FootshopDbContext data,
             IShoeService shoes,
-            IDesignerService designers)
+            IDesignerService designers,
+            SignInManager<User> signInManager,
+            UserManager<User> userManager)
         {
             this.data = data;
             this.shoes = shoes;
             this.designers = designers;
+            this.signInManager = signInManager;
+            this.userManager = userManager;
         }
 
         public IActionResult Add()
@@ -110,48 +118,13 @@
 
         public IActionResult Details(int shoeId)
         {
-            var shoeModel = this.data
-                .Shoes
-                .Where(s => s.Id == shoeId)
-                .Select(s => s.Model)
-                .FirstOrDefault();
+            var shoeModel = this.shoes.GetShoeModel(shoeId);
 
-            var colors = this.data
-                .Shoes
-                .Where(s => s.Model == shoeModel)
-                .Select(s => new ShoeColorServiceModel
-                {
-                    Id = s.Id,
-                    Name = s.Color.Name,
-                    ShoeColorImg = s.ImageUrl
-                })
-                .ToList();
+            var colors = this.shoes.GetDetailsShoeColor(shoeModel);
 
-            var sizes = this.data
-            .Shoes
-            .Where(s => s.Model == shoeModel)
-            .Select(s => new ShoeSizeServiceModel
-            {
-                Id = s.Id,
-                SizeValue = s.Size.SizeValue
-            })
-            .ToList();
+            var sizes = this.shoes.GetDetailsShoeSizes(shoeModel);
 
-            var details = this.data
-                .Shoes
-                .Where(s => s.Id == shoeId)
-                .Select(s => new ShoeDetailsListingView
-                {
-                    Id = s.Id,
-                    Price = s.Price,
-                    Brand = s.Brand,
-                    Model = s.Model,
-                    ImageUrl = s.ImageUrl,
-                    Description = s.Description,
-                    Sizes = sizes,
-                    Colors = colors
-                })
-                .FirstOrDefault();
+            var details = this.shoes.GetShoeDetails(shoeId, sizes, colors);
 
             return View(details);
         }
@@ -170,11 +143,11 @@
 
             if (!this.designers.IsDesigner(this.User.Id()))
             {
-                return RedirectToAction(nameof(DesignerController.Become), "Dealers");
+                return RedirectToAction(nameof(DesignerController.Become), "Designers");
             }
-            var car = this.shoes.Details(id);
+            var shoeD = this.shoes.Details(id);
 
-            if (car.UserId != userId)
+            if (shoeD.UserId != userId)
             {
                 return Unauthorized();
             }
@@ -231,12 +204,22 @@
                  shoe.ShoeColorsId,
                  shoe.SizeId);
 
-            if(!shoeEdited)
+            if (!shoeEdited)
             {
                 return BadRequest();
             }
 
             return RedirectToAction(nameof(All));
+        }
+
+        public IActionResult Favourites()
+        {
+            var userId = this.User.Id();
+            var user = new User();
+            var shoes = user.FavouriteShoes.ToList();
+
+
+            return View(shoes);
         }
     }
 }

@@ -49,10 +49,16 @@
                 <br>
                 <div class="quantityAndBuy">
                     <br>
-                    <button class="addToCartBtn m-2">Add to Cart</button>
-                    <button class="addToFavBtn m-2" >Add to Favourites</button>
+                    <a class="nav-link text-dark addToCartBtn m-2" asp-controller="ShoppingCart" asp-route-id="@Model.Id" asp-action="Cart">Add to Cart</a>
+                    @using (Html.BeginForm("Favourites", "Shoes"))
+                    {
+                    <a href="/Shoes/Favourites" class="btn btn-info detailsBtn addToFavBtn m-2">Favourites</a>
+                    }
                 </div>
                 <br>
+                <div class="text-center">
+                <label>FootShop - The Right Place For - Your Feet </label>
+                </div>
             </div>
         </div>
     </div>

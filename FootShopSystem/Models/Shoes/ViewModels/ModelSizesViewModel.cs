@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace FootShopSystem.Models.Shoes.ViewModels
+﻿namespace FootShopSystem.Models.Shoes.ViewModels
 {
     public class ModelSizesViewModel
     {

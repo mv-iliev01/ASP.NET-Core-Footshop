@@ -23,8 +23,8 @@
 
         [HttpPost]
         [Authorize]
-        public IActionResult Become(BecomeDesignerFormModel dealer)
-        {
+        public IActionResult Become(BecomeDesignerFormModel designer)
+         {
             var userId = this.User.Id();
 
             var userIdAlreadyDealer = this.data
@@ -38,13 +38,13 @@
 
             if (!ModelState.IsValid)
             {
-                return View(dealer);
+                return View(designer);
             }
 
             var designerData = new Designer
             {
-                Name = dealer.Name,
-                PhoneNumber = dealer.PhoneNumber,
+                Name = designer.Name,
+                PhoneNumber = designer.PhoneNumber,
                 UserId = userId
             };
 

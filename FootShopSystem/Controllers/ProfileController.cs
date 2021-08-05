@@ -7,19 +7,17 @@
     using FootShopSystem.Services.Shoes;
     using Microsoft.AspNetCore.Mvc;
     using System.Linq;
+    using System.Security.Claims;
 
     public class ProfileController : Controller
     {
         private readonly IShoeService shoes;
         private readonly FootshopDbContext data;
-        private readonly IDesignerService designers;
 
         public ProfileController(
-            IDesignerService designers,
             FootshopDbContext data,
             IShoeService shoes)
         {
-            this.designers = designers;
             this.shoes = shoes;
             this.data = data;
         }
@@ -27,16 +25,18 @@
         public IActionResult AccountPage()
         {
             var myShoesCount = shoes.ByUser(this.User.Id()).Count();
-            //var username = this.data.Customers.Select(c => c.Username).FirstOrDefault(); ;
-            //var email = this.data.Customers.Select(c => c.Email).FirstOrDefault();
-            //var purchasesCount = this.data.Customers.Select(c => c.PurchasesCount).Count();
+            var purchasesCount = this.data.Users.Select(c => c.PurchasesCount).Count();
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userName = User.FindFirstValue(ClaimTypes.Name);
+            var userEmail = User.FindFirstValue(ClaimTypes.Email);
 
             return View(new ProfileDataViewModel
             {
                 MyShoeCount = myShoesCount,
-                //Username = username,
-                //Email = email,
-                //PurchasesCount = purchasesCount
+                Username = userName,
+                Email = userEmail,
+                PurchasesCount = purchasesCount
             });
         }
     }

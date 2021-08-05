@@ -67,9 +67,9 @@
             {
                 var user = new User { UserName = Input.Username, Email = Input.Email };
                 var result = await userManager.CreateAsync(user, Input.Password);
+
                 if (result.Succeeded)
                 {
-                    var customer = new User { Fullname = Input.Username, Email = Input.Email};
                     
                     await signInManager.SignInAsync(user, isPersistent: false);
                     return LocalRedirect(returnUrl);
