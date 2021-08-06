@@ -2,6 +2,7 @@
 {
     using FootShopSystem.Data;
     using FootShopSystem.Data.Models;
+    using FootShopSystem.Models.Shoes;
     using Microsoft.AspNetCore.Mvc;
     using System.Linq;
 
@@ -17,18 +18,26 @@
 
         public IActionResult Cart(int id)
         {
+            var shoe = this.data.Shoes.Where(s => s.Id == id).FirstOrDefault();
 
-            var user = new User();
+            var model = new ShoeDetailsListingView
+            {
+                Id = shoe.Id,
+                Price = shoe.Price,
+                Brand = shoe.Brand,
+                Model = shoe.Model,
+                ImageUrl = shoe.ImageUrl,
+                Description = shoe.Description,
+                Size=shoe.SizeId,
+                Color=shoe.ColorId,
 
-            var shoe = this.data
-                .Shoes
-                .Where(s => s.Id == id)
-                .FirstOrDefault();
+            };
 
-            var shoes = user.FavouriteShoes;
-            shoes.Add(shoe);
-
-            return View(shoes);
+            return View(model); ;
+        }
+        public IActionResult Cancel()
+        {
+            return Redirect("/Shoes/All");
         }
     }
 }

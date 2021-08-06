@@ -114,8 +114,8 @@ namespace FootShopSystem.Data.Migrations
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
-                    b.Property<int>("Price")
-                        .HasColumnType("int");
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
 
                     b.Property<int>("SizeId")
                         .HasColumnType("int");
@@ -123,10 +123,7 @@ namespace FootShopSystem.Data.Migrations
                     b.Property<DateTime>("TimeCreated")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId1")
+                    b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
@@ -139,7 +136,7 @@ namespace FootShopSystem.Data.Migrations
 
                     b.HasIndex("SizeId");
 
-                    b.HasIndex("UserId1");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Shoes");
                 });
@@ -396,7 +393,7 @@ namespace FootShopSystem.Data.Migrations
 
                     b.HasOne("FootShopSystem.Data.Models.User", "User")
                         .WithMany("FavouriteShoes")
-                        .HasForeignKey("UserId1");
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Category");
 

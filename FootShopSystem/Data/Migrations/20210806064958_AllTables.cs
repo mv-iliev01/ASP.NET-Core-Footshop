@@ -3,10 +3,30 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FootShopSystem.Data.Migrations
 {
-    public partial class UserDesignerShoeSizeColorCategoryCustomerTables : Migration
+    public partial class AllTables : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AddColumn<string>(
+                name: "Fullname",
+                table: "AspNetUsers",
+                type: "nvarchar(max)",
+                nullable: true);
+
+            migrationBuilder.AddColumn<int>(
+                name: "PurchasesCount",
+                table: "AspNetUsers",
+                type: "int",
+                nullable: false,
+                defaultValue: 0);
+
+            migrationBuilder.AddColumn<int>(
+                name: "ShoesMade",
+                table: "AspNetUsers",
+                type: "int",
+                nullable: false,
+                defaultValue: 0);
+
             migrationBuilder.CreateTable(
                 name: "Categories",
                 columns: table => new
@@ -69,18 +89,25 @@ namespace FootShopSystem.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Brand = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
                     Model = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
-                    Price = table.Column<int>(type: "int", nullable: false),
+                    Price = table.Column<double>(type: "float", nullable: false),
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     TimeCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
                     ColorId = table.Column<int>(type: "int", nullable: false),
                     SizeId = table.Column<int>(type: "int", nullable: false),
-                    DesignerId = table.Column<int>(type: "int", nullable: false)
+                    DesignerId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Shoes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Shoes_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Shoes_Categories_CategoryId",
                         column: x => x.CategoryId,
@@ -126,6 +153,11 @@ namespace FootShopSystem.Data.Migrations
                 name: "IX_Shoes_SizeId",
                 table: "Shoes",
                 column: "SizeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Shoes_UserId",
+                table: "Shoes",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -144,6 +176,18 @@ namespace FootShopSystem.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Sizes");
+
+            migrationBuilder.DropColumn(
+                name: "Fullname",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropColumn(
+                name: "PurchasesCount",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropColumn(
+                name: "ShoesMade",
+                table: "AspNetUsers");
         }
     }
 }

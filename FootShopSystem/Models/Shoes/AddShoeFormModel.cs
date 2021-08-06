@@ -19,7 +19,7 @@
 
 
         [Range(MinPrice, MaxPrice)]
-        public int Price { get; init; }
+        public double Price { get; init; }
 
         [DisplayName("Image Url")]
         [Required]

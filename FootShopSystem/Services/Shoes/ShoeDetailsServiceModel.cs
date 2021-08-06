@@ -1,4 +1,6 @@
-﻿namespace FootShopSystem.Services.Shoes
+﻿using System.Collections.Generic;
+
+namespace FootShopSystem.Services.Shoes
 {
     public class ShoeDetailsServiceModel : ShoeServiceModel
     {
@@ -13,5 +15,11 @@
         public int SizeId { get; init; }
 
         public string UserId { get; init; }
+
+        public bool isFav { get; set; }
+
+        public IEnumerable<ShoeSizeServiceModel> Sizes { get; set; }
+        
+        public IEnumerable<ShoeColorServiceModel> Colors { get; set; }
     }
 }

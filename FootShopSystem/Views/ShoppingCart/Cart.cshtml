@@ -1,17 +1,24 @@
-﻿
-<div class="card" style="width: 18rem;">
-    <img src="..." class="card-img-top" alt="...">
-    <div class="card-body">
-        <h5 class="card-title">Card title</h5>
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-    </div>
-    <ul class="list-group list-group-flush">
-        <li class="list-group-item">An item</li>
-        <li class="list-group-item">A second item</li>
-        <li class="list-group-item">A third item</li>
-    </ul>
-    <div class="card-body">
-        <a href="#" class="card-link">Card link</a>
-        <a href="#" class="card-link">Another link</a>
+﻿@model ShoeDetailsListingView
+<div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+    <div class="card" style="width: 18rem;">
+        <img src="@Model.ImageUrl" class="card-img-top">
+        <div class="card-body">
+            <h5 class="card-title">@Model.Brand - @Model.Model</h5>
+            <p class="card-text">Description :@Model.Description</p>
+            <div class="text-center">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Price : @Model.Price lv</li>
+                    <li class="list-group-item">Color : @Model.Color</li>
+                    <li class="list-group-item">Size : @Model.Size</li>
+                </ul>
+                <div class="card-body">
+                    <button class="btn-danger m-1">Buy Now</button>
+                    @using (Html.BeginForm("Cancel", "ShoppingCart"))
+                    {
+                        <button class="btn-info m-1">Cancel</button>
+                    }
+                </div>
+            </div>
+        </div>
     </div>
 </div>

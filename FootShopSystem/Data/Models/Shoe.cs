@@ -19,7 +19,7 @@
         public string Model { get; set; }
 
         [Required]
-        public int Price { get; set; }
+        public double Price { get; set; }
 
         [Required]
         public string ImageUrl { get; set; }
@@ -42,7 +42,7 @@
         public int DesignerId { get; init; }
         public Designer Designer { get; init; }
 
-        public int UserId { get; init; }
+        public string UserId { get; init; }
         public User User { get; init; }
 
     }

@@ -5,6 +5,7 @@
     using FootShopSystem.Data.Models;
     using FootShopSystem.Infrastructures;
     using FootShopSystem.Models.Shoes;
+    using FootShopSystem.Models.Shoes.ViewModels;
     using FootShopSystem.Services.Designers;
     using FootShopSystem.Services.Shoes;
     using Microsoft.AspNetCore.Authorization;
@@ -56,6 +57,8 @@
         {
             var designerId = this.designers.IdByUser(this.User.Id());
 
+            var userId = this.User.Id();
+
             if (designerId == 0)
             {
                 return RedirectToAction(nameof(DesignerController.Become), "Designers");
@@ -85,7 +88,8 @@
                 return View(shoe);
             }
 
-            this.shoes.Create(shoe.Brand,
+            this.shoes.Create(
+                shoe.Brand,
                 shoe.Model,
                 shoe.Price,
                 shoe.ImageUrl,
@@ -94,6 +98,7 @@
                 shoe.CategoryId,
                 shoe.ShoeColorsId,
                 shoe.SizeId,
+                userId,
                 designerId);
 
             return RedirectToAction(nameof(All));
@@ -116,17 +121,13 @@
             return View(query);
         }
 
-        public IActionResult Details(int shoeId)
+        public IActionResult Details(int id)
         {
-            var shoeModel = this.shoes.GetShoeModel(shoeId);
+            var userId = this.User.Id();
 
-            var colors = this.shoes.GetDetailsShoeColor(shoeModel);
+            var shoe = this.shoes.Details(id,userId);
 
-            var sizes = this.shoes.GetDetailsShoeSizes(shoeModel);
-
-            var details = this.shoes.GetShoeDetails(shoeId, sizes, colors);
-
-            return View(details);
+            return View(shoe);
         }
 
         public IActionResult MyShoes()
@@ -145,13 +146,13 @@
             {
                 return RedirectToAction(nameof(DesignerController.Become), "Designers");
             }
-            var shoeD = this.shoes.Details(id);
+            var shoeD = this.shoes.Details(id,userId);
 
             if (shoeD.UserId != userId)
             {
                 return Unauthorized();
             }
-            var shoe = this.shoes.Details(id);
+            var shoe = this.shoes.Details(id, userId);
 
             return View(new AddShoeFormModel
             {
@@ -214,12 +215,20 @@
 
         public IActionResult Favourites()
         {
+            int id = 1;
             var userId = this.User.Id();
-            var user = new User();
-            var shoes = user.FavouriteShoes.ToList();
+            var user = this.data.Users.Where(u => u.Id == userId).FirstOrDefault();
+
+            var shoe = this.data
+                .Shoes
+                .Where(s => s.Id == id)
+                .FirstOrDefault();
+
+            user.FavouriteShoes.Add(shoe);
+            this.data.SaveChanges();
 
 
-            return View(shoes);
+            return View(user.FavouriteShoes.ToList());
         }
     }
 }

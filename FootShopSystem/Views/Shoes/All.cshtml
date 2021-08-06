@@ -126,13 +126,13 @@ else
        
                    @foreach (var shoe in Model.Shoes)
                    {
-       <div class="item">
-           <img src="@shoe.ImageUrl" class="picture" asp-append-version="true">
-           <label class="text">@shoe.Brand</label>
-           <label class="text">@shoe.Model</label>
-           <label class="textPrice">@shoe.Price BGN</label>
-           <a href="/Shoes/Details?ShoeId=@shoe.Id" class="btn btn-info detailsBtn">Details</a>
-       </div>      }
+                   <div class="item">
+                       <img src="@shoe.ImageUrl" class="picture" asp-append-version="true">
+                       <label class="text">@shoe.Brand</label>
+                       <label class="text">@shoe.Model</label>
+                       <label class="textPrice">@shoe.Price BGN</label>
+                       <a class="btn btn-info detailsBtn" asp-controller="Shoes" asp-route-id="@shoe.Id" asp-action="Details">Details</a>
+                   </div>      }
                </div>
            </div>
        

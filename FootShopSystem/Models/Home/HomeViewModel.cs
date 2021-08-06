@@ -9,7 +9,7 @@ namespace FootShopSystem.Models.Home
         public string Brand { get; init; }
         public string Model { get; init; }
         public string Color { get; init; }
-        public int Price { get; init; }
+        public double Price { get; init; }
         public DateTime TimeCreated { get; init; }
 
     }

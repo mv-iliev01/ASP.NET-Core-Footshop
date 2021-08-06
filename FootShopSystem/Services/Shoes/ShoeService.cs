@@ -134,55 +134,81 @@
             .ToList();
 
 
-        public ShoeDetailsListingServiceModel GetShoeDetails(int shoeId,
-            IEnumerable<ShoeSizeServiceModel> sizes,
-            IEnumerable<ShoeColorServiceModel> colors)
-        => this.data
-                .Shoes
-                .Where(s => s.Id == shoeId)
-                .Select(s => new ShoeDetailsListingServiceModel
-                {
-                    Id = s.Id,
-                    Price = s.Price,
-                    Brand = s.Brand,
-                    Model = s.Model,
-                    ImageUrl = s.ImageUrl,
-                    Description = s.Description,
-                    Sizes = sizes,
-                    Colors = colors
-                })
+        public ShoeDetailsListingServiceModel GetShoeDetails(int shoeId)
+        {
+            var shoeModel = GetShoeModel(shoeId);
+            var colors = GetDetailsShoeColor(shoeModel);
+            var sizes = GetDetailsShoeSizes(shoeModel);
+
+
+            var result = this.data
+                  .Shoes
+                  .Where(s => s.Id == shoeId)
+                  .Select(s => new ShoeDetailsListingServiceModel
+                  {
+                      Id = s.Id,
+                      Price = s.Price,
+                      Brand = s.Brand,
+                      Model = s.Model,
+                      ImageUrl = s.ImageUrl,
+                      Description = s.Description,
+                      Sizes = sizes.ToList(),
+                      Colors = colors.ToList()
+                  })
+                  .FirstOrDefault();
+
+            return result;
+        }
+
+        public ShoeDetailsServiceModel Details(int id, string userId)
+        {
+            var shoeModel = GetShoeModel(id);
+            var colors = GetDetailsShoeColor(shoeModel);
+            var sizes = GetDetailsShoeSizes(shoeModel);
+
+            var user = this.data
+                .Users
+                .Where(u => u.Id == userId)
                 .FirstOrDefault();
 
-        public ShoeDetailsServiceModel Details(int id)
-                => this.data
-                    .Shoes
-                    .Where(s => s.Id == id)
-                    .Select(s => new ShoeDetailsServiceModel
-                    {
-                        Id = s.Id,
-                        Brand = s.Brand,
-                        Model = s.Model,
-                        ImageUrl = s.ImageUrl,
-                        Price = s.Price,
-                        Description = s.Description,
-                        DesignerId = s.Designer.Id,
-                        DesignerName = s.Designer.Name,
-                        UserId = s.Designer.UserId
+            var shoe = user
+                .FavouriteShoes
+                .FirstOrDefault(s => s.Id == id);
 
-                    })
-                    .FirstOrDefault();
+            return this.data
+                        .Shoes
+                        .Where(s => s.Id == id)
+                        .Select(s => new ShoeDetailsServiceModel
+                        {
+                            Id = s.Id,
+                            Brand = s.Brand,
+                            Model = s.Model,
+                            ImageUrl = s.ImageUrl,
+                            Price = s.Price,
+                            Description = s.Description,
+                            DesignerId = s.Designer.Id,
+                            DesignerName = s.Designer.Name,
+                            UserId = s.Designer.UserId,
+                            Colors = colors.ToList(),
+                            Sizes = sizes.ToList(),
+                            isFav = shoe == null ? false : true
+
+                        })
+                        .FirstOrDefault();
+        }
 
 
         public int Create(
             string brand,
             string model,
-            int price,
+            double price,
             string imageUrl,
             string description,
             DateTime TimeCreated,
             int categoryId,
             int shoeColorsId,
             int sizeId,
+            string userId,
             int designerId)
         {
             var shoeData = new Shoe
@@ -196,6 +222,7 @@
                 CategoryId = categoryId,
                 ColorId = shoeColorsId,
                 SizeId = sizeId,
+                UserId = userId,
                 DesignerId = designerId
 
             };
@@ -210,7 +237,7 @@
             int id,
             string brand,
             string model,
-            int price,
+            double price,
             string imageUrl,
             string description,
             int categoryId,
@@ -242,7 +269,7 @@
                 .Shoes
                 .Any(c => c.Id == shoeId && c.DesignerId == designerId);
 
-        
+
     }
 }
 
