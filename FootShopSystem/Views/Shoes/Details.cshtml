@@ -1,4 +1,6 @@
-﻿@{ ViewData["Title"] = "Details"; }
+﻿@using static FootShopSystem.WebConstants;
+
+@{ ViewData["Title"] = "Details"; }
 
 <!DOCTYPE html>
 <html lang="en">
@@ -29,29 +31,38 @@
                     <p class="bold">Choose Color: </p>
                     @foreach (var shoe in Model.Colors)
                     {
-        <a href="/Shoes/Details?ShoeId=@shoe.Id">
-            <img src="@shoe.ShoeColorImg">
-        </a>}
+                        <a href="/Shoes/Details?ShoeId=@shoe.Id">
+                            <img src="@shoe.ShoeColorImg">
+                        </a>}
                 </div>
                 <div class="chooseSize">
                     <p class="bold">Choose Size : </p>
                     <ul>
                         @foreach (var size in Model.Sizes)
                         {
-            <div class="sizeContainer">
-                <button class="sizeButton">@size.SizeValue</button>
-                <label>(10 in stock)</label>
-            </div>}
+                            <div class="sizeContainer">
+                                <button class="sizeButton">@size.SizeValue</button>
+                                <label>(10 in stock)</label>
+                            </div>
+                        }
                     </ul>
                 </div>
                 <br>
                 <div class="quantityAndBuy">
                     <br>
-                    <a class="nav-link text-dark addToCartBtn m-2" asp-controller="ShoppingCart" asp-route-id="@Model.Id" asp-action="Cart" >Add To Cart</a>
-                    @if (!Model.isFav)
+                    @if (!User.IsInRole(AdministratorRoleName))
+                    {
+                        <a class="nav-link text-dark addToCartBtn m-2" asp-controller="ShoppingCart" asp-route-id="@Model.Id" asp-action="Cart">Add To Cart</a>
+                        @if (!Model.isFav)
                         {
-                            <a class="btn btn-info detailsBtn addToFavBtn m-2" asp-controller="Shoes" asp-action="Favourites">Add To Favourites</a>
+                            @using (Html.BeginForm("AddToFavourites", "Profile", new { id = Model.Id }))
+                            {
+                                <button class="btn btn-primary mt-3">Add to Favourites &#11088;</button>
+                            }
+
                         }
+                    }
+
                 </div>
                 <br>
                 <div class="text-center">

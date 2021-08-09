@@ -17,18 +17,15 @@
     {
         private readonly IShoeService shoes;
         private readonly IDesignerService designers;
-        private readonly FootshopDbContext data;
         private readonly SignInManager<User> signInManager;
         private readonly UserManager<User> userManager;
 
         public ShoesController(
-            FootshopDbContext data,
             IShoeService shoes,
             IDesignerService designers,
             SignInManager<User> signInManager,
             UserManager<User> userManager)
         {
-            this.data = data;
             this.shoes = shoes;
             this.designers = designers;
             this.signInManager = signInManager;
@@ -53,7 +50,7 @@
 
         [HttpPost]
         [Authorize]
-        public IActionResult Add(AddShoeFormModel shoe)
+        public IActionResult Add(AddShoeFormModel shoeModel)
         {
             var designerId = this.designers.IdByUser(this.User.Id());
 
@@ -64,40 +61,40 @@
                 return RedirectToAction(nameof(DesignerController.Become), "Designers");
             }
 
-            if (!this.data.Categories.Any(s => s.Id == shoe.CategoryId))
+            if (!shoes.CategoryExists(shoeModel))
             {
-                this.ModelState.AddModelError(nameof(shoe.CategoryId), "Category does not exist!");
+                this.ModelState.AddModelError(nameof(shoeModel.CategoryId), "Category does not exist!");
             }
 
-            if (!this.data.Colors.Any(s => s.Id == shoe.ShoeColorsId))
+            if (!shoes.ColorExists(shoeModel))
             {
-                this.ModelState.AddModelError(nameof(shoe.ShoeColorsId), "Color does not exist!");
+                this.ModelState.AddModelError(nameof(shoeModel.ShoeColorsId), "Color does not exist!");
             }
 
-            if (!this.data.Sizes.Any(s => s.Id == shoe.SizeId))
+            if (!shoes.SizeExists(shoeModel))
             {
-                this.ModelState.AddModelError(nameof(shoe.SizeId), "Size does not exist!");
+                this.ModelState.AddModelError(nameof(shoeModel.SizeId), "Size does not exist!");
             }
 
             if (!ModelState.IsValid)
             {
-                shoe.Categories = this.shoes.GetShoeCategories();
-                shoe.Colors = this.shoes.GetShoeColors();
-                shoe.Sizes = this.shoes.GetShoeSizes();
+                shoeModel.Categories = this.shoes.GetShoeCategories();
+                shoeModel.Colors = this.shoes.GetShoeColors();
+                shoeModel.Sizes = this.shoes.GetShoeSizes();
 
-                return View(shoe);
+                return View(shoeModel);
             }
 
             this.shoes.Create(
-                shoe.Brand,
-                shoe.Model,
-                shoe.Price,
-                shoe.ImageUrl,
-                shoe.Description,
-                shoe.TimeCreated,
-                shoe.CategoryId,
-                shoe.ShoeColorsId,
-                shoe.SizeId,
+                shoeModel.Brand,
+                shoeModel.Model,
+                shoeModel.Price,
+                shoeModel.ImageUrl,
+                shoeModel.Description,
+                shoeModel.TimeCreated,
+                shoeModel.CategoryId,
+                shoeModel.ShoeColorsId,
+                shoeModel.SizeId,
                 userId,
                 designerId);
 
@@ -125,7 +122,7 @@
         {
             var userId = this.User.Id();
 
-            var shoe = this.shoes.Details(id,userId);
+            var shoe = this.shoes.Details(id, userId);
 
             return View(shoe);
         }
@@ -146,7 +143,7 @@
             {
                 return RedirectToAction(nameof(DesignerController.Become), "Designers");
             }
-            var shoeD = this.shoes.Details(id,userId);
+            var shoeD = this.shoes.Details(id, userId);
 
             if (shoeD.UserId != userId)
             {
@@ -213,22 +210,13 @@
             return RedirectToAction(nameof(All));
         }
 
-        public IActionResult Favourites()
+        public IActionResult DeleteShoe(int id)
         {
-            int id = 1;
-            var userId = this.User.Id();
-            var user = this.data.Users.Where(u => u.Id == userId).FirstOrDefault();
+            var shoe = shoes.GetShoe(id);
 
-            var shoe = this.data
-                .Shoes
-                .Where(s => s.Id == id)
-                .FirstOrDefault();
-
-            user.FavouriteShoes.Add(shoe);
-            this.data.SaveChanges();
-
-
-            return View(user.FavouriteShoes.ToList());
+            shoes.RemoveShoe(shoe);
+                
+            return Redirect("/Shoes/All");
         }
     }
 }

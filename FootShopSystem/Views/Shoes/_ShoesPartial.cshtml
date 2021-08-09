@@ -8,7 +8,7 @@
             <div class="card-body">
                 <h5 class="card-title">@shoe.Brand</h5>
                 <p class="card-text">@shoe.Brand @shoe.Model - @shoe.Price</p>
-                <a href="/Shoes/Details?ShoeId=@shoe.Id" class="btn btn-info detailsBtn">View</a>
+                 <a class="btn btn-info detailsBtn" asp-controller="Shoes" asp-route-id="@shoe.Id" asp-action="Details">View</a>
                 <a asp-controller="Shoes" asp-action="Edit" asp-route-id="@shoe.Id" class="btn btn-warning detailsBtn">Edit</a>
                 <a asp-controller="Shoes" asp-action="Delete" asp-route-id="@shoe.Id" class="btn btn-danger detailsBtn">Delete</a>
             </div>

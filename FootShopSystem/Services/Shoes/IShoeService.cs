@@ -1,5 +1,6 @@
 ﻿namespace FootShopSystem.Services.Shoes
 {
+    using FootShopSystem.Data.Models;
     using FootShopSystem.Models.Shoes;
     using System;
     using System.Collections.Generic;
@@ -37,18 +38,26 @@
             int shoeColorsId,
             int sizeId);
 
-        IEnumerable<ShoeServiceModel> ByUser(string userId);
+        public IEnumerable<ShoeServiceModel> ByUser(string userId);
 
-        bool IsByDesigner(int carId, int dealerId);
-        IEnumerable<string> AllShoeBrands();
+        public Shoe GetShoe(int id);
+        public void RemoveShoe(Shoe shoe);
 
-        IEnumerable<ShoeCategoryServiceModel> GetShoeCategories();
 
-        IEnumerable<ShoeColorServiceModel> GetShoeColors();
+        public bool CategoryExists(AddShoeFormModel shoe);
+        public bool ColorExists(AddShoeFormModel shoe);
+        public bool SizeExists(AddShoeFormModel shoe);
 
-        IEnumerable<ShoeSizeServiceModel> GetShoeSizes();
+        public bool IsByDesigner(int carId, int dealerId);
+        public IEnumerable<string> AllShoeBrands();
 
-        IEnumerable<ShoeColorServiceModel> GetDetailsShoeColor(string shoeModel);
+        public IEnumerable<ShoeCategoryServiceModel> GetShoeCategories();
+
+        public IEnumerable<ShoeColorServiceModel> GetShoeColors();
+
+        public IEnumerable<ShoeSizeServiceModel> GetShoeSizes();
+
+        public IEnumerable<ShoeColorServiceModel> GetDetailsShoeColor(string shoeModel);
 
         public IEnumerable<ShoeSizeServiceModel> GetDetailsShoeSizes(string shoeModel);
 

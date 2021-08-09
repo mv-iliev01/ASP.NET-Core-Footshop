@@ -14,16 +14,13 @@
     {
         private readonly SignInManager<User> signInManager;
         private readonly UserManager<User> userManager;
-        private readonly FootshopDbContext data;
 
         public RegisterModel(
             UserManager<User> userManager,
-            SignInManager<User> signInManager,
-            FootshopDbContext data)
+            SignInManager<User> signInManager)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
-            this.data = data;
         }
 
         [BindProperty]

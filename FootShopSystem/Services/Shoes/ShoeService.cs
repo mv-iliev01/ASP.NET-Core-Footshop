@@ -175,26 +175,27 @@
                 .FavouriteShoes
                 .FirstOrDefault(s => s.Id == id);
 
-            return this.data
-                        .Shoes
-                        .Where(s => s.Id == id)
-                        .Select(s => new ShoeDetailsServiceModel
-                        {
-                            Id = s.Id,
-                            Brand = s.Brand,
-                            Model = s.Model,
-                            ImageUrl = s.ImageUrl,
-                            Price = s.Price,
-                            Description = s.Description,
-                            DesignerId = s.Designer.Id,
-                            DesignerName = s.Designer.Name,
-                            UserId = s.Designer.UserId,
-                            Colors = colors.ToList(),
-                            Sizes = sizes.ToList(),
-                            isFav = shoe == null ? false : true
+            return this
+                .data
+                     .Shoes
+                     .Where(s => s.Id == id)
+                     .Select(s => new ShoeDetailsServiceModel
+                     {
+                         Id = s.Id,
+                         Brand = s.Brand,
+                         Model = s.Model,
+                         ImageUrl = s.ImageUrl,
+                         Price = s.Price,
+                         Description = s.Description,
+                         DesignerId = s.Designer.Id,
+                         DesignerName = s.Designer.Name,
+                         UserId = s.Designer.UserId,
+                         Colors = colors.ToList(),
+                         Sizes = sizes.ToList(),
+                         isFav = shoe == null ? false : true
 
-                        })
-                        .FirstOrDefault();
+                     })
+                     .FirstOrDefault();
         }
 
 
@@ -269,7 +270,32 @@
                 .Shoes
                 .Any(c => c.Id == shoeId && c.DesignerId == designerId);
 
+        public bool CategoryExists(AddShoeFormModel shoe)
+        {
+            return this.data.Categories.Any(s => s.Id == shoe.CategoryId);
+        }
 
+        public bool ColorExists(AddShoeFormModel shoe)
+        {
+            return this.data.Colors.Any(s => s.Id == shoe.ShoeColorsId);
+        }
+
+        public bool SizeExists(AddShoeFormModel shoe)
+        {
+            return this.data.Sizes.Any(s => s.Id == shoe.SizeId);
+        }
+
+        public Shoe GetShoe(int id)
+        {
+            return this.data.Shoes.Where(s => s.Id == id).FirstOrDefault();
+        }
+
+        public void RemoveShoe(Shoe shoe)
+        {
+            this.data.Shoes.Remove(shoe);
+
+            this.data.SaveChanges();
+        }
     }
 }
 
