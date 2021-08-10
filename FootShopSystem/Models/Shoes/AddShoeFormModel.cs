@@ -29,7 +29,7 @@
         [Required]
         [StringLength(DescriptionMaxLength
             , MinimumLength = DescriptionMinLength,
-            ErrorMessage = "The filed Description must be a text with minimum length of {2}.")]
+            ErrorMessage = "The filed Description must be a text with minimum length of {2} and maximum of 500.")]
         public string Description { get; init; }
         public DateTime TimeCreated { get; init; }
 

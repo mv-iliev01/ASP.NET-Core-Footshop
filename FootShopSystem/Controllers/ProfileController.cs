@@ -3,6 +3,7 @@
     using FootShopSystem.Data;
     using FootShopSystem.Infrastructures;
     using FootShopSystem.Models.Profile;
+    using FootShopSystem.Models.Shoes;
     using FootShopSystem.Models.Shoes.ViewModels;
     using FootShopSystem.Services.Profile;
     using FootShopSystem.Services.Shoes;
@@ -59,13 +60,36 @@
 
             return RedirectToAction(nameof(ShoesController.All), "Shoes");
         }
-        public IActionResult Favourites()
+        public IActionResult Favourites([FromQuery] AllShoesQueryModel query)
         {
             var userId = this.User.Id();
-            var user = this.data.Users.Where(u => u.Id == userId).FirstOrDefault();
-            var favouriteShoes = user.FavouriteShoes;
 
-            return View(favouriteShoes);
+            var queryResult = this.profile.All(
+               query.Brand,
+               query.SearchTerm,
+               query.CurrentPage,
+               query.ShoeCount,
+               userId);
+
+            var brands = this.shoes.AllModels().Select(c => c.Name);
+
+            query.Brands = brands;
+            query.ShoeCount = queryResult.TotalShoes;
+            query.Shoes = queryResult.Shoes;
+
+            return View(query);
+        }
+
+        public IActionResult RemoveFromFavourites(int id)
+        {
+            var userId = this.User.Id();
+
+            var shoe = this.data.Shoes.Where(s => s.Id == id).FirstOrDefault();
+            var user = this.data.Users.Where(u => u.Id == userId).FirstOrDefault();
+
+            user.FavouriteShoes.Remove(shoe);
+
+            return Redirect("/Profile/Favourites");
         }
 
     }

@@ -14,6 +14,8 @@
 
         ShoeDetailsServiceModel Details(int id, string userId);
 
+        IEnumerable<ShoeCategoryServiceModel> AllModels();
+
         int Create(
             string brand,
             string model,

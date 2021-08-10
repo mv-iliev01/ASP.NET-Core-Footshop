@@ -1,13 +1,23 @@
-﻿<div class="row">
-    @foreach (var shoe in Model)
+﻿@model AllShoesQueryModel
+
+@{ ViewData["Title"] = "Favourites"; }
+<div class="row">
+    @foreach (var shoe in Model.Shoes)
     {
-<div class="card" style="width: 18rem;">
+<div class="card m-1" style="width: 18rem;">
     <img src="@shoe.ImageUrl" class="card-img-top">
     <div class="card-body">
-        <h5 class="card-title">@shoe.Brand</h5>
-        <p class="card-text">@shoe.Brand @shoe.Model - @shoe.Price</p>
-        <a href="/Shoes/Details?ShoeId=@shoe.Id" class="btn btn-info detailsBtn">View</a>
-        <a asp-controller="Shoes" asp-action="Delete" asp-route-id="@shoe.Id" class="btn btn-danger detailsBtn">Remove</a>
+        <div class="text-center">
+            <h5 class="card-title">@shoe.Brand</h5>
+            <p class="card-text">@shoe.Brand @shoe.Model - @shoe.Price lv</p>
+            <div class="d-inline-flex">
+            <a asp-controller="Shoes" asp-action="Details" asp-route-id="@shoe.Id" class="btn m-1 btn-info detailsBtn">View</a>
+            @using (Html.BeginForm("RemoveFromFavourites", "Profile", new { id = shoe.Id }))
+            {
+               <button class="btn btn-danger detailsBtn m-1">Remove</button>
+            }
+            </div>
+        </div>
     </div>
 </div>}
-</div>
+</div>  

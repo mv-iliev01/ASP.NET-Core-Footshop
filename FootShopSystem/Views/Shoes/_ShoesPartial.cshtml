@@ -4,13 +4,16 @@
     @foreach (var shoe in Model)
      {
         <div class="card" style="width: 18rem;">
-            <img src="@shoe.ImageUrl" class="card-img-top" >
+            <img src="@shoe.ImageUrl" class="card-img-top">
             <div class="card-body">
                 <h5 class="card-title">@shoe.Brand</h5>
                 <p class="card-text">@shoe.Brand @shoe.Model - @shoe.Price</p>
-                 <a class="btn btn-info detailsBtn" asp-controller="Shoes" asp-route-id="@shoe.Id" asp-action="Details">View</a>
-                <a asp-controller="Shoes" asp-action="Edit" asp-route-id="@shoe.Id" class="btn btn-warning detailsBtn">Edit</a>
-                <a asp-controller="Shoes" asp-action="Delete" asp-route-id="@shoe.Id" class="btn btn-danger detailsBtn">Delete</a>
+                <a class="btn btn-block btn-info detailsBtn m-1" asp-controller="Shoes" asp-route-id="@shoe.Id" asp-action="Details">View</a>
+                <a asp-controller="Shoes" asp-action="Edit" asp-route-id="@shoe.Id" class="btn btn-block btn-warning detailsBtn m-1">Edit</a>
+                @using (Html.BeginForm("DeleteShoe", "Shoes", new { id = shoe.Id }))
+                 {
+                    <button class="btn btn-block btn-danger detailsBtn m-1">Delete</button>
+                 }
             </div>
         </div>
      }

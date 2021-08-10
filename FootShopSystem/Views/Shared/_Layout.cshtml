@@ -19,7 +19,6 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                @*<a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">FootShop</a>*@
                 <a class="navbar-brand" href="/">
                     <img src="/img/logo.png" width="90" height="48" alt="">
                 </a>
@@ -34,6 +33,9 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-controller="Shoes" asp-action="All">All Shoes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Profile" asp-action="Favourites">Favourites</a>
                         </li>
                     </ul>
                     <partial name="_LoginPartial" />

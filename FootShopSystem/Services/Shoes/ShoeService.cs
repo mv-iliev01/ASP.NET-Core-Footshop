@@ -296,6 +296,16 @@
 
             this.data.SaveChanges();
         }
+
+        public IEnumerable<ShoeCategoryServiceModel> AllModels()
+        => this.data
+                .Categories
+                .Select(c => new ShoeCategoryServiceModel
+                {
+                    Id = c.Id,
+                    Name = c.Name
+                })
+                .ToList();
     }
 }
 

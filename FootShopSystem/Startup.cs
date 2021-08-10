@@ -4,6 +4,8 @@ namespace FootShopSystem
     using FootShopSystem.Data.Models;
     using FootShopSystem.Infrastructures;
     using FootShopSystem.Services.Designers;
+    using FootShopSystem.Services.Home;
+    using FootShopSystem.Services.Profile;
     using FootShopSystem.Services.Shoes;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -44,6 +46,8 @@ namespace FootShopSystem
                 .AddControllersWithViews();
 
             services.AddTransient<IShoeService, ShoeService>();
+            services.AddTransient<IHomeService, HomeService>();
+            services.AddTransient<IProfileService, ProfileService>();
             services.AddTransient<IDesignerService, DesignerService>();
         }
 

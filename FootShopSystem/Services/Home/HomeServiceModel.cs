@@ -1,8 +1,7 @@
-﻿
-namespace FootShopSystem.Models.Home
+﻿namespace FootShopSystem.Services.Home
 {
     using System;
-    public class HomeViewModel
+    public class HomeServiceModel
     {
         public int Id { get; set; }
         public string ImageUrl { get; init; }
@@ -11,6 +10,5 @@ namespace FootShopSystem.Models.Home
         public string Color { get; init; }
         public double Price { get; init; }
         public DateTime TimeCreated { get; init; }
-
     }
 }

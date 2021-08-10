@@ -1,42 +1,25 @@
 ﻿namespace FootShopSystem.Controllers
 {
-    using FootShopSystem.Data;
     using FootShopSystem.Models;
     using FootShopSystem.Models.Home;
+    using FootShopSystem.Services.Home;
     using Microsoft.AspNetCore.Mvc;
     using System.Diagnostics;
-    using System.Linq;
 
     public class HomeController : Controller
     {
-        private readonly FootshopDbContext data;
+        private readonly IHomeService service;
 
-        public HomeController(FootshopDbContext data)
+        public HomeController(IHomeService service)
         {
-            this.data = data;
+            this.service = service;
         }
 
         public IActionResult Index(HomeShoeListingViewModel query)
         {
-
-            var newestThreeModels = this.data
-                .Shoes
-                .Select(s => new HomeViewModel
-                {
-                    Id = s.Id,
-                    ImageUrl = s.ImageUrl,
-                    Brand = s.Brand,
-                    Model = s.Model,
-                    Color = s.Color.Name,
-                    Price = s.Price,
-                    TimeCreated = s.TimeCreated
-                })
-                .OrderByDescending(sh => sh.TimeCreated)
-                .Take(3)
-                .ToList();
+            var newestThreeModels = service.GetTopThreeShoeModels();
 
             query.Shoes = newestThreeModels;
-
 
             return View(query);
         }

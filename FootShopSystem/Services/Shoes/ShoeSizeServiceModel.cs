@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace FootShopSystem.Services.Shoes
+﻿namespace FootShopSystem.Services.Shoes
 {
     public class ShoeSizeServiceModel
     {
