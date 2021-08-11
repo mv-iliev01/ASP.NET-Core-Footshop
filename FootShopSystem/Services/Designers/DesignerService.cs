@@ -1,4 +1,5 @@
 ﻿using FootShopSystem.Data;
+using FootShopSystem.Data.Models;
 using System.Linq;
 
 namespace FootShopSystem.Services.Designers
@@ -9,6 +10,12 @@ namespace FootShopSystem.Services.Designers
 
         public DesignerService(FootshopDbContext data) 
             => this.data = data;
+
+        public void AddDesignerToDb(Designer designerData)
+        {
+            this.data.Designers.Add(designerData);
+            this.data.SaveChanges();
+        }
 
         public int IdByUser(string userId)
         => this.data

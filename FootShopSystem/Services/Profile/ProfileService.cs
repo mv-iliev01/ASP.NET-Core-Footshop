@@ -1,11 +1,11 @@
-﻿using FootShopSystem.Data;
-using FootShopSystem.Data.Models;
-using FootShopSystem.Services.Shoes;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace FootShopSystem.Services.Profile
+﻿namespace FootShopSystem.Services.Profile
 {
+    using FootShopSystem.Data;
+    using FootShopSystem.Data.Models;
+    using FootShopSystem.Services.Shoes;
+    using System.Collections.Generic;
+    using System.Linq;
+
     public class ProfileService : IProfileService
     {
         private readonly FootshopDbContext data;
@@ -84,5 +84,29 @@ namespace FootShopSystem.Services.Profile
             .Favourites
             .Where(f => f.UserId == userId)
             .Select(s => s.Shoe);
+
+        public int GetFavouriteShoesCount(string userId)
+        => this.data
+            .Favourites
+            .Where(f => f.UserId == userId)
+            .Select(f => f.Shoe).Count();
+
+        public Shoe GetShoe(int id)
+            => this.data
+            .Shoes
+            .Where(s => s.Id == id)
+            .FirstOrDefault();
+
+        public User GetUser(string userId)
+        => this.data
+                .Users
+                .Where(u => u.Id == userId)
+                .FirstOrDefault();
+
+        public bool IsDesigner(string userId)
+        => this.data
+            .Designers
+            .Any(d => d.UserId == userId);
+
     }
 }

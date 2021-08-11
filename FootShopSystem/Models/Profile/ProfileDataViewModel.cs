@@ -6,6 +6,6 @@
         public int FavouriteShoesCount { get; init; }
         public string Username { get; init; }
         public string Email { get; init; }
-        public int PurchasesCount { get; init; }
+        public string Role { get; init; }
     }
 }

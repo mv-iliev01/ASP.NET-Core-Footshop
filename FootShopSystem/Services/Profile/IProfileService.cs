@@ -1,13 +1,11 @@
-﻿using FootShopSystem.Data.Models;
-using FootShopSystem.Services.Shoes;
-using System.Collections.Generic;
-
-namespace FootShopSystem.Services.Profile
+﻿namespace FootShopSystem.Services.Profile
 {
+    using FootShopSystem.Data.Models;
+    using System.Collections.Generic;
     public interface IProfileService
     {
         public bool AddProductToUserFavourite(string userId, int productId);
-
+        public bool IsDesigner(string userId);
         public ShoeQueryServiceModel All(
             string category,
             string searchTerm,
@@ -15,6 +13,9 @@ namespace FootShopSystem.Services.Profile
             int productsPerPage,
             string userId);
 
+        public User GetUser(string userId);
+        public Shoe GetShoe(int id);
+        public int GetFavouriteShoesCount(string userId);
         public IEnumerable<Shoe> GetCustomerFavouriteProducts(string userId);
     }
 }

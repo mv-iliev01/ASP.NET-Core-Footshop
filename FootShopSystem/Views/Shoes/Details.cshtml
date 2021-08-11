@@ -1,6 +1,15 @@
-﻿@using static FootShopSystem.WebConstants;
+﻿@model ShoeDetailsServiceModel
 
 @{ ViewData["Title"] = "Details"; }
+@using FootShopSystem.Data;
+@using static FootShopSystem.WebConstants;
+
+@inject FootshopDbContext data
+@{
+    var userId = this.User.Id();
+    var designer = data.Designers.Where(s => s.UserId == userId).FirstOrDefault();
+    var IsFavourite = data.Favourites.Any(f => f.UserId == userId && f.ShoeId == Model.Id);
+}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -31,20 +40,17 @@
                     <p class="bold">Choose Color: </p>
                     @foreach (var shoe in Model.Colors)
                     {
-                        <a href="/Shoes/Details?ShoeId=@shoe.Id">
+                        <a asp-controller="Shoes" asp-route-id="@shoe.Id" asp-action="Details">
                             <img src="@shoe.ShoeColorImg">
-                        </a>}
+                        </a>
+                    }
                 </div>
                 <div class="chooseSize">
                     <p class="bold">Choose Size : </p>
                     <ul>
-                        @foreach (var size in Model.Sizes)
-                        {
-                            <div class="sizeContainer">
-                                <button class="sizeButton">@size.SizeValue</button>
-                                <label>(10 in stock)</label>
-                            </div>
-                        }
+                        <div class="sizeContainer">
+                            <button class="sizeButton">@Model.Size.SizeValue</button>
+                        </div>
                     </ul>
                 </div>
                 <br>
@@ -52,14 +58,15 @@
                     <br>
                     @if (!User.IsInRole(AdministratorRoleName))
                     {
-                        <a class="nav-link text-dark addToCartBtn m-2" asp-controller="ShoppingCart" asp-route-id="@Model.Id" asp-action="Cart">Add To Cart</a>
-                        @if (!Model.isFav)
+                        <button class="btn btn-danger text-dark col-12" asp-controller="ShoppingCart" asp-route-id="@Model.Id" asp-action="Cart">Add To Cart</button>
+
+                        @if (!IsFavourite)
                         {
                             @using (Html.BeginForm("AddToFavourites", "Profile", new { id = Model.Id }))
                             {
-                                <button class="btn btn-primary mt-3">Add to Favourites &#11088;</button>
+                                <button class="btn btn-primary mt-3 col-12">Add to Favourites &#11088;</button>
                             }
-
+                             
                         }
                     }
 

@@ -1,20 +1,20 @@
 ﻿namespace CarRentingSystem.Controllers
 {
-    using FootShopSystem.Data;
     using FootShopSystem.Data.Models;
     using FootShopSystem.Infrastructures;
     using FootShopSystem.Models.Designers;
+    using FootShopSystem.Services.Designers;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using System.Linq;
 
     public class DesignerController : Controller
     {
-        private readonly FootshopDbContext data;
+        private readonly IDesignerService user;
 
-        public DesignerController(FootshopDbContext data)
-            => this.data = data;
-
+        public DesignerController(IDesignerService user)
+        {
+            this.user = user;
+        }
 
         public IActionResult Become() 
         {
@@ -27,11 +27,7 @@
          {
             var userId = this.User.Id();
 
-            var userIdAlreadyDealer = this.data
-                .Designers
-                .Any(d => d.UserId == userId);
-
-            if (userIdAlreadyDealer)
+            if (this.user.IsDesigner(userId))
             {
                 return BadRequest();
             }
@@ -48,8 +44,7 @@
                 UserId = userId
             };
 
-            this.data.Designers.Add(designerData);
-            this.data.SaveChanges();
+            this.user.AddDesignerToDb(designerData);
 
             return RedirectToAction("All", "Shoes");
         }

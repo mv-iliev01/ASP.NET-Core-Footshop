@@ -122,7 +122,7 @@
                     ShoeColorImg = s.ImageUrl
                 })
                 .ToList();
-        public IEnumerable<ShoeSizeServiceModel> GetDetailsShoeSizes(string shoeModel)
+        public ShoeSizeServiceModel GetDetailsShoeSize(string shoeModel)
         => this.data
             .Shoes
             .Where(s => s.Model == shoeModel)
@@ -131,7 +131,18 @@
                 Id = s.Id,
                 SizeValue = s.Size.SizeValue
             })
-            .ToList();
+            .FirstOrDefault();
+
+        public IEnumerable<ShoeSizeServiceModel> GetDetailsShoeSizes(string shoeModel)
+       => this.data
+           .Shoes
+           .Where(s => s.Model == shoeModel)
+           .Select(s => new ShoeSizeServiceModel
+           {
+               Id = s.Id,
+               SizeValue = s.Size.SizeValue
+           })
+           .ToList();
 
 
         public ShoeDetailsListingServiceModel GetShoeDetails(int shoeId)
@@ -164,7 +175,7 @@
         {
             var shoeModel = GetShoeModel(id);
             var colors = GetDetailsShoeColor(shoeModel);
-            var sizes = GetDetailsShoeSizes(shoeModel);
+            var size = GetDetailsShoeSize(shoeModel);
 
             var user = this.data
                 .Users
@@ -191,7 +202,7 @@
                          DesignerName = s.Designer.Name,
                          UserId = s.Designer.UserId,
                          Colors = colors.ToList(),
-                         Sizes = sizes.ToList(),
+                         Size = size,
                          isFav = shoe == null ? false : true
 
                      })
@@ -306,6 +317,8 @@
                     Name = c.Name
                 })
                 .ToList();
+
+        
     }
 }
 

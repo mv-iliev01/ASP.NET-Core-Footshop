@@ -1,24 +1,21 @@
 ﻿namespace FootShopSystem.Controllers
 {
-    using FootShopSystem.Data;
-    using FootShopSystem.Data.Models;
     using FootShopSystem.Models.Shoes;
+    using FootShopSystem.Services.Profile;
     using Microsoft.AspNetCore.Mvc;
-    using System.Linq;
 
     public class ShoppingCartController : Controller
     {
+        private readonly IProfileService service;
 
-        private readonly FootshopDbContext data;
-
-        public ShoppingCartController(FootshopDbContext data)
+        public ShoppingCartController(IProfileService service)
         {
-            this.data = data;
+            this.service = service;
         }
 
         public IActionResult Cart(int id)
         {
-            var shoe = this.data.Shoes.Where(s => s.Id == id).FirstOrDefault();
+            var shoe = this.service.GetShoe(id);
 
             var model = new ShoeDetailsListingView
             {

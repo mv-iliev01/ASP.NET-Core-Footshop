@@ -18,7 +18,7 @@ namespace FootShopSystem.Services.Shoes
 
         public bool isFav { get; set; }
 
-        public IEnumerable<ShoeSizeServiceModel> Sizes { get; set; }
+        public ShoeSizeServiceModel Size { get; set; }
         
         public IEnumerable<ShoeColorServiceModel> Colors { get; set; }
     }

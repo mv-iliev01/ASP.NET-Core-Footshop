@@ -22,6 +22,7 @@
 
             SeedCategories(services);
             SeedAdministrator(services);
+            //SeedShoes(services);
 
             return app;
         }
@@ -77,22 +78,29 @@
             new Size { SizeValue = 45 },
             });
 
+            data.SaveChanges();
+        }
+        private static void SeedShoes(IServiceProvider services)
+        {
+            var data = services.GetRequiredService<FootshopDbContext>(); 
 
-            //var shoe = new Shoe
-            //{
-            //    Brand = "Nike",
-            //    Model = "Airmax",
-            //    Price = 200,
-            //    ImageUrl = "https://www.sportvision.bg/files/thumbs/files/images/slike_proizvoda/media/CW1/CW1626-002/images/thumbs_800/CW1626-002_800_800px.jpg",
-            //    Description = "The best shoe ever created you should try it !",
-            //    TimeCreated = DateTime.Now,
-            //    CategoryId = 1,
-            //    ColorId = 1,
-            //    SizeId = 1
-            //};
+            var shoe = new Shoe
+            {
+                Id=1,
+                Brand = "Nike",
+                Model = "Airmax",
+                Price = 200,
+                ImageUrl = "https://www.sportvision.bg/files/thumbs/files/images/slike_proizvoda/media/CW1/CW1626-002/images/thumbs_800/CW1626-002_800_800px.jpg",
+                Description = "The best shoe ever created you should try it !",
+                TimeCreated = DateTime.Now,
+                CategoryId = 1,
+                ColorId = 1,
+                SizeId = 1,
+                DesignerId=0,
+                UserId=null
+            };
 
-            //data.Shoes.Add(shoe);
-
+            data.Shoes.Add(shoe);
             data.SaveChanges();
         }
 

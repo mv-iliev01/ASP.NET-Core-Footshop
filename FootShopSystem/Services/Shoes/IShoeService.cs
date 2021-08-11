@@ -60,8 +60,9 @@
         public IEnumerable<ShoeSizeServiceModel> GetShoeSizes();
 
         public IEnumerable<ShoeColorServiceModel> GetDetailsShoeColor(string shoeModel);
-
         public IEnumerable<ShoeSizeServiceModel> GetDetailsShoeSizes(string shoeModel);
+
+        public ShoeSizeServiceModel GetDetailsShoeSize(string shoeModel);
 
         public ShoeDetailsListingServiceModel GetShoeDetails(int shoeId);
 

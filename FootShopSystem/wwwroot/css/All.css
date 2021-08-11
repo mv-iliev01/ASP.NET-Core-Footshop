@@ -40,9 +40,6 @@ a {
 }
 
 .AllShoes {
-    float: right;
-    width: 75%;
-    margin-top: 5%;
     height:1100px;
 }
 
@@ -79,9 +76,6 @@ a {
 
 .textPrice {
     float: left;
-    padding: 10px;
-    padding-top: 0;
-    padding-left: 0;
     width: 100%;
     font-weight: bold;
 }

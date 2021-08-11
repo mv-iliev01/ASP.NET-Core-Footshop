@@ -4,7 +4,6 @@
     using FootShopSystem.Infrastructures;
     using FootShopSystem.Models.Profile;
     using FootShopSystem.Models.Shoes;
-    using FootShopSystem.Models.Shoes.ViewModels;
     using FootShopSystem.Services.Profile;
     using FootShopSystem.Services.Shoes;
     using Microsoft.AspNetCore.Mvc;
@@ -15,15 +14,12 @@
     {
         private readonly IShoeService shoes;
         private readonly IProfileService profile;
-        private readonly FootshopDbContext data;
 
         public ProfileController(
-            FootshopDbContext data,
             IShoeService shoes,
             IProfileService profile)
         {
             this.shoes = shoes;
-            this.data = data;
             this.profile = profile;
         }
 
@@ -31,24 +27,22 @@
         {
             var myShoesCount = shoes.ByUser(this.User.Id()).Count();
 
-            var purchasesCount = this.data.Users.Select(c => c.PurchasesCount).Count();
-
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
             var userName = User.FindFirstValue(ClaimTypes.Name);
             var userEmail = User.FindFirstValue(ClaimTypes.Email);
 
-            var user = this.data.Users.Where(u => u.Id == userId).FirstOrDefault();
-            var favouriteShoes = user.FavouriteShoes.Count();
+            var isDesigner = this.profile.IsDesigner(userId);
 
+            var favouriteShoes = this.profile.GetFavouriteShoesCount(userId);
 
             return View(new ProfileDataViewModel
             {
                 FavouriteShoesCount = favouriteShoes,
                 MyShoeCount = myShoesCount,
                 Username = userName,
+                Role = isDesigner ? "Designer" : "Customer",
                 Email = userEmail,
-
-                PurchasesCount = purchasesCount
             });
         }
 
@@ -84,8 +78,8 @@
         {
             var userId = this.User.Id();
 
-            var shoe = this.data.Shoes.Where(s => s.Id == id).FirstOrDefault();
-            var user = this.data.Users.Where(u => u.Id == userId).FirstOrDefault();
+            var shoe = this.profile.GetShoe(id);
+            var user = this.profile.GetUser(userId);
 
             user.FavouriteShoes.Remove(shoe);
 

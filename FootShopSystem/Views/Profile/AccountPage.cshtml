@@ -1,15 +1,29 @@
 ﻿@model ProfileDataViewModel
+@using static FootShopSystem.WebConstants
+ 
+
 @{ ViewData["Title"] = "Account Page"; }
+
 <div class="text-center">
+    <div class="col-12">
+        @if(Model.Role != "Designer") 
+         { 
+            <a class="btn btn-secondary m-2" asp-controller="Designer" asp-action="Become">Become Designer</a>
+         }
+         
+         <a class="btn btn-info m-2" asp-controller="Profile" asp-action="Favourites">Favourites &#11088;</a>
+         
+    </div>
     <img src="/img/man.png" class="rounded">
     <h4>Username: <label class="font-weight-lighter">@Model.Username</label></h4>
     <hr>
     <h4>E-Mail: <label class="font-weight-lighter"> @Model.Email</label></h4>
     <hr>
-    <h4>Role: <label class="font-weight-lighter">@this.User.IsInRole("User")</label></h4>
+    <h4>Role: <label class="font-weight-lighter">@( this.User.IsInRole(AdministratorRoleName) ? "Admin" : "Customer")</label></h4>
+    <hr>
 </div>
 <div>
     <h3>Shoe offers made: <label class="font-weight-lighter">@Model.MyShoeCount</label> </h3>
     <h3>Favourites shoes: <label class="font-weight-lighter">@Model.FavouriteShoesCount</label></h3>
-    <h3>Purchases made: <label class="font-weight-lighter">@Model.PurchasesCount</label></h3>
 </div>
+
