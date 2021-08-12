@@ -58,7 +58,7 @@
                     <br>
                     @if (!User.IsInRole(AdministratorRoleName))
                     {
-                        <button class="btn btn-danger text-dark col-12" asp-controller="ShoppingCart" asp-route-id="@Model.Id" asp-action="Cart">Add To Cart</button>
+                        <a class="btn btn-danger text-dark col-12" asp-controller="ShoppingCart" asp-route-id="@Model.Id" asp-action="Cart">Add To Cart</a>
 
                         @if (!IsFavourite)
                         {
@@ -66,7 +66,6 @@
                             {
                                 <button class="btn btn-primary mt-3 col-12">Add to Favourites &#11088;</button>
                             }
-                             
                         }
                     }
 

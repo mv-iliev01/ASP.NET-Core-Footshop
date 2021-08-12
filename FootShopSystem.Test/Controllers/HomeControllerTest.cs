@@ -2,6 +2,7 @@
 using FootShopSystem.Controllers;
 using FootShopSystem.Data.Models;
 using FootShopSystem.Models.Home;
+using FootShopSystem.Models.Profile;
 using FootShopSystem.Services.Home;
 using Microsoft.AspNetCore.Mvc;
 using MyTested.AspNetCore.Mvc;
@@ -13,28 +14,14 @@ namespace FootShopSystem.Test.Controllers
     public class HomeControllerTest
     {
         [Fact]
-        public void IndexShouldReturnViewWithCorrectModelAndData()
-       => MyMvc
-            .Pipeline()
-            .ShouldMap("/")
-            .To<HomeController>(c => c.Index(null))
-            .Which(controller => controller
-                 .WithData(Enumerable.Range(0, 10).Select(i => new Shoe()))
-            .ShouldReturn()
-            .View(view => view
-            .WithModelOfType<HomeShoeListingViewModel>()
-            .Passing(m => m.Shoes.Should().HaveCount(3))));
+        public void GetAccountPageShouldBeForAuthorizedUsersAndReturnView()
+        => MyController<ProfileController>
+               .Instance(controller => controller
+               .WithUser())
+               .Calling(c => c.AccountPage())
+               .ShouldReturn()
+               .View(view => view.WithModelOfType<ProfileDataViewModel>());
 
-        [Fact]
-        public void ErrorShouldReturnView()
-        {
-            var homeController = new HomeController(null);
 
-            var result = homeController.Error();
-
-            Assert.NotNull(result);
-            Assert.IsType<ViewResult>(result);
-
-        }
     }
 }

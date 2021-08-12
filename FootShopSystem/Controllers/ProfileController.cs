@@ -1,6 +1,5 @@
 ﻿namespace FootShopSystem.Controllers
 {
-    using FootShopSystem.Data;
     using FootShopSystem.Infrastructures;
     using FootShopSystem.Models.Profile;
     using FootShopSystem.Models.Shoes;

@@ -1,4 +1,6 @@
 ﻿@model ShoeDetailsListingView
+@{ ViewData["Title"] = "Buy shoe"; }
+
 <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
     <div class="card" style="width: 18rem;">
         <img src="@Model.ImageUrl" class="card-img-top">
@@ -12,7 +14,10 @@
                     <li class="list-group-item">Size : @Model.Size</li>
                 </ul>
                 <div class="card-body">
-                    <button class="btn-danger m-1">Buy Now</button>
+                    @using (Html.BeginForm("BuyNow", "ShoppingCart", new { shoeId = Model.Id }))
+                    {
+                        <button class="btn-danger m-1" onclick="return confirm('Are you sure you want to buy @(Model.Brand) @(Model.Model) - Shoe ')">Buy Now</button>
+                    }
                     @using (Html.BeginForm("Cancel", "ShoppingCart"))
                     {
                         <button class="btn-info m-1">Cancel</button>

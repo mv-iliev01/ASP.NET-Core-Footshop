@@ -1,4 +1,4 @@
-﻿namespace CarRentingSystem.Controllers
+﻿namespace FootShopSystem.Controllers
 {
     using FootShopSystem.Data.Models;
     using FootShopSystem.Infrastructures;
@@ -16,6 +16,7 @@
             this.user = user;
         }
 
+        [Authorize]
         public IActionResult Become() 
         {
             return View();

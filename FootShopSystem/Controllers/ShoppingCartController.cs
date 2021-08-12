@@ -2,15 +2,19 @@
 {
     using FootShopSystem.Models.Shoes;
     using FootShopSystem.Services.Profile;
+    using FootShopSystem.Services.Shoes;
     using Microsoft.AspNetCore.Mvc;
 
     public class ShoppingCartController : Controller
     {
         private readonly IProfileService service;
+        private readonly IShoeService shoeService;
 
-        public ShoppingCartController(IProfileService service)
+        public ShoppingCartController(IProfileService service,
+            IShoeService shoeService)
         {
             this.service = service;
+            this.shoeService = shoeService;
         }
 
         public IActionResult Cart(int id)
@@ -31,6 +35,13 @@
             };
 
             return View(model); ;
+        }
+        public IActionResult BuyNow(int shoeId)
+        {
+            var shoe = this.service.GetShoe(shoeId);
+            shoeService.RemoveShoe(shoe);
+
+            return Redirect("/");
         }
         public IActionResult Cancel()
         {

@@ -1,6 +1,5 @@
 ﻿namespace FootShopSystem.Controllers
 {
-    using CarRentingSystem.Controllers;
     using FootShopSystem.Data.Models;
     using FootShopSystem.Infrastructures;
     using FootShopSystem.Models.Shoes;
@@ -115,6 +114,7 @@
             return View(query);
         }
 
+        [Authorize]
         public IActionResult Details(int id)
         {
             var userId = this.User.Id();
@@ -124,6 +124,7 @@
             return View(shoe);
         }
 
+        [Authorize]
         public IActionResult MyShoes()
         {
             var myShoes = this.shoes.ByUser(this.User.Id());
@@ -163,9 +164,9 @@
                 Sizes = this.shoes.GetShoeSizes()
             });
         }
+
         [Authorize]
         [HttpPost]
-
         public IActionResult Edit(int id, AddShoeFormModel shoe)
         {
 
@@ -207,6 +208,7 @@
             return RedirectToAction(nameof(All));
         }
 
+        [Authorize]
         public IActionResult DeleteShoe(int id)
         {
             var shoe = shoes.GetShoe(id);
