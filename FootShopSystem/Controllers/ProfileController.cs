@@ -1,5 +1,6 @@
 ﻿namespace FootShopSystem.Controllers
 {
+    using FootShopSystem.Data;
     using FootShopSystem.Infrastructures;
     using FootShopSystem.Models.Profile;
     using FootShopSystem.Models.Shoes;
@@ -13,13 +14,15 @@
     {
         private readonly IShoeService shoes;
         private readonly IProfileService profile;
+        private readonly FootshopDbContext data;
 
         public ProfileController(
             IShoeService shoes,
-            IProfileService profile)
+            IProfileService profile, FootshopDbContext data)
         {
             this.shoes = shoes;
             this.profile = profile;
+            this.data = data;
         }
 
         public IActionResult AccountPage()
@@ -77,10 +80,7 @@
         {
             var userId = this.User.Id();
 
-            var shoe = this.profile.GetShoe(id);
-            var user = this.profile.GetUser(userId);
-
-            user.FavouriteShoes.Remove(shoe);
+            profile.RemoveFromFavourites(id, userId);
 
             return Redirect("/Profile/Favourites");
         }

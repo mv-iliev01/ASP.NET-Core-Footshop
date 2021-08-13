@@ -17,5 +17,7 @@
         public Shoe GetShoe(int id);
         public int GetFavouriteShoesCount(string userId);
         public IEnumerable<Shoe> GetCustomerFavouriteProducts(string userId);
+
+        public void RemoveFromFavourites(int id,string userId);
     }
 }

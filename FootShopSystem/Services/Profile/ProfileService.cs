@@ -108,5 +108,13 @@
             .Designers
             .Any(d => d.UserId == userId);
 
+        public void RemoveFromFavourites(int id,string userId)
+        {
+            var result = this.data.Favourites.Where(f => f.UserId == userId && f.ShoeId == id).FirstOrDefault();
+
+            this.data.Favourites.Remove(result);
+
+            this.data.SaveChanges();
+        }
     }
 }
