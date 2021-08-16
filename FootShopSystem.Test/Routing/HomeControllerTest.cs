@@ -11,7 +11,7 @@ namespace FootShopSystem.Test.Routing
             => MyRouting
                 .Configuration()
                 .ShouldMap("/")
-                .To<HomeController>(c => c.Index(null));
+                .To<HomeController>(c => c.Index());
 
         [Fact]
         public void ErrorRouteShouldBeMapped()

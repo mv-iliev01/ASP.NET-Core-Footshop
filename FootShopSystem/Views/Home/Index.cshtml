@@ -1,4 +1,5 @@
-﻿@model HomeShoeListingViewModel
+﻿@using FootShopSystem.Services.Home
+@model List<HomeServiceModel>
 
 @{ ViewData["Title"] = "Home Page"; }
 
@@ -79,7 +80,7 @@
         <h1>Newest Models</h1>
     </div>
     <div class="card-deck mt-4">
-        @foreach (var shoe in Model.Shoes)
+        @foreach (var shoe in Model)
          {
             <div class="card" style="width: 18rem;">
                 <img src="@shoe.ImageUrl" class="card-img-top">

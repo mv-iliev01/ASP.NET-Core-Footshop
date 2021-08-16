@@ -6,6 +6,7 @@
     using FootShopSystem.Models.Shoes;
     using FootShopSystem.Services.Profile;
     using FootShopSystem.Services.Shoes;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using System.Linq;
     using System.Security.Claims;
@@ -25,6 +26,7 @@
             this.data = data;
         }
 
+        [Authorize]
         public IActionResult AccountPage()
         {
             var myShoesCount = shoes.ByUser(this.User.Id()).Count();
