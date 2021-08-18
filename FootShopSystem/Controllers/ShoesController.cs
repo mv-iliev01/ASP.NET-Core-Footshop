@@ -28,11 +28,12 @@
             this.userManager = userManager;
         }
 
+        [Authorize]
         public IActionResult Add()
         {
             if (!this.designers.IsDesigner(this.User.Id()))
             {
-                return RedirectToAction(nameof(DesignerController.Become), "Dealers");
+                return RedirectToAction(nameof(DesignerController.Become), "Designer");
             }
 
             return View(new AddShoeFormModel
@@ -54,7 +55,7 @@
 
             if (designerId == 0)
             {
-                return RedirectToAction(nameof(DesignerController.Become), "Designers");
+                return RedirectToAction(nameof(DesignerController.Become), "Designer");
             }
 
             if (!shoes.CategoryExists(shoeModel))
@@ -139,7 +140,7 @@
 
             if (!this.designers.IsDesigner(this.User.Id()))
             {
-                return RedirectToAction(nameof(DesignerController.Become), "Designers");
+                return RedirectToAction(nameof(DesignerController.Become), "Designer");
             }
             var shoeD = this.shoes.Details(id, userId);
 
@@ -174,7 +175,7 @@
 
             if (designerId == 0)
             {
-                return RedirectToAction(nameof(DesignerController.Become), "Dealers");
+                return RedirectToAction(nameof(DesignerController.Become), "Designer");
             }
 
             if (!ModelState.IsValid)

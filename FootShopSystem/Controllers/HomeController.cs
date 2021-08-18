@@ -1,7 +1,6 @@
 ﻿namespace FootShopSystem.Controllers
 {
     using FootShopSystem.Models;
-    using FootShopSystem.Models.Home;
     using FootShopSystem.Services.Home;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Caching.Memory;

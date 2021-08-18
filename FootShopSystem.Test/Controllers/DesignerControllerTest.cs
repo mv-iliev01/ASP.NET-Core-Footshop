@@ -26,7 +26,7 @@
         [InlineData("Designer", "+35988888")]
         public void PostBecomeShouldBeForAuthorizedUsersAndReturnRedirectWithValidModel(
             string dealerName,
-            string phoneNumber) 
+            string phoneNumber)
             => MyController<DesignerController>
                 .Instance(controller => controller
                     .WithUser())
@@ -50,5 +50,26 @@
                 .ShouldReturn()
                 .Redirect(redirect => redirect
                     .To<ShoesController>(c => c.All(With.Any<AllShoesQueryModel>())));
+
+        [Theory]
+        [InlineData("Designer", "+35988888")]
+        public void PostBecomeSellerToBecomeSellerShouldReturnBadRequest(
+            string name,
+            string phoneNumber)
+            => MyController<DesignerController>
+                .Instance(controller => controller
+                    .WithUser(user => user.WithIdentifier(TestUser.Identifier)))
+                .Calling(c => c.Become(new BecomeDesignerFormModel
+                {
+                    Name = name,
+                    PhoneNumber = phoneNumber
+                }))
+                .ShouldHave()
+                .ActionAttributes(attributes => attributes
+                    .RestrictingForHttpMethod(HttpMethod.Post)
+                    .RestrictingForAuthorizedRequests())
+                .AndAlso()
+                .ShouldReturn()
+                .Redirect();
     }
 }

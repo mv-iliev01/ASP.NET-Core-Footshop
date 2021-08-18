@@ -2,6 +2,7 @@
 {
     using FootShopSystem.Controllers;
     using FootShopSystem.Models.Profile;
+    using FootShopSystem.Models.Shoes;
     using FootShopSystem.Test.Data;
     using MyTested.AspNetCore.Mvc;
     using System.Linq;
@@ -9,30 +10,48 @@
 
     public class ProfileControllerTest
     {
+        private const string UserId = "Test";
+
         [Fact]
-        public void AccountPageShouldWorkAsExpected()
-            => MyController<ProfileController>
-                .Instance(controller => controller
-                    .WithData(User.GetUser()))
-                .Calling(c => c.AccountPage())
-                .ShouldHave()
-                .ActionAttributes(attributes => attributes
-                    .RestrictingForHttpMethod(HttpMethod.Get)
-                    .RestrictingForAuthorizedRequests())
+        public void CustomerShouldCreateObjectCorrectlyAndShouldReturnView()
+              => MyController<ProfileController>
+               .Instance()
+               .WithUser(u => u.WithIdentifier(TestUser.Identifier))
+               .Calling(c => c.AccountPage())
+               .ShouldHave()
+               .ActionAttributes(a => a
+                   .RestrictingForAuthorizedRequests())
                 .ValidModelState()
-                .Data(data => data
-                    .WithSet<ProfileDataViewModel>(dealers => dealers
-                        .Any(d => d.FavouriteShoesCount == 5 &&
-                        d.Email == "user@abv.bg" &&
-                        d.MyShoeCount == 2 &&
-                        d.Username == "Mimo" &&
-                        d.Role == "Designer")))
-                .AndAlso()
-                .ShouldReturn()
-                .View(view => view
-                .WithModelOfType<ProfileDataViewModel>());
+               .AndAlso()
+               .ShouldReturn()
+               .View(view =>
+                     view.WithModelOfType<ProfileDataViewModel>());
 
+       
 
+        //[Theory]
+        //[InlineData("test", "test", Models.ProductsSorting.Anime, 1)]
+        //public void FavouritesShouldReturnAllFavouriteProductsAndReturnView(
+        //            string category,
+        //            string searchTerm,
+        //            ProductsSorting sorting,
+        //            int currPage)
+        //        => MyController<ProfileController>
+        //            .Instance()
+        //            .WithUser(user => user.WithIdentifier(TestUser.Identifier))
+        //            .Calling(c => c.Favourites(new ProductsSearchQueryModel()
+        //            {
+        //                Category = category,
+        //                SearchTerm = searchTerm,
+        //                Sorting = sorting,
+        //                Categories = null,
+        //                TotalProducts = 3,
+        //                CurrentPage = currPage,
+        //                Products = new System.Collections.Generic.List<ProductServiceModel>(),
+        //            }))
+        //            .ShouldReturn()
+        //            .View(view => view
+        //                .WithModelOfType<ProductsSearchQueryModel>());
 
     }
 }
